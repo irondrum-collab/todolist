@@ -300,23 +300,63 @@
 
 ---
 
+#### BE-08a. 카테고리 CRUD API (UC-10)
+
+**목표**: `GET/POST /api/categories`, `PUT/DELETE /api/categories/:id` 구현
+
+**작업 항목**
+- [x] `src/repositories/categoryRepository.js` 확장
+  - `findAllByUser(userId)`: 사용자 카테고리 목록 조회
+  - `findById(id)`: 단건 조회
+  - `create(userId, name)`: 카테고리 생성
+  - `update(id, name)`: 카테고리 이름 수정
+  - `remove(id)`: 카테고리 삭제
+- [x] `src/services/categoryService.js` 작성
+  - `getList(userId)`: 카테고리 목록 반환
+  - `create(userId, name)`: 카테고리 생성
+  - `update(userId, categoryId, name)`: 소유권 검사 (403), '기본' 수정 차단 (DR-CAT-03, 400)
+  - `remove(userId, categoryId)`: 소유권 검사 (403), '기본' 삭제 차단 (DR-CAT-02, 400)
+- [x] `src/controllers/categoryController.js` 작성
+  - 이름 유효성 검사 (1~30자)
+  - 각 액션 호출 및 응답 직렬화
+- [x] `src/routes/categoryRoutes.js` 작성 (모든 라우트에 authMiddleware 적용)
+  - `GET /api/categories` (UC-10)
+  - `POST /api/categories` (UC-10)
+  - `PUT /api/categories/:id` (UC-10)
+  - `DELETE /api/categories/:id` (UC-10)
+
+**완료 조건**
+- [x] `GET /api/categories` → 본인 카테고리만 반환 (기본 포함) 확인
+- [x] `POST /api/categories` → `201`, DB 레코드 생성 확인
+- [x] `PUT /api/categories/:id` 타인 소유 → `403` 응답
+- [x] `PUT /api/categories/:id` '기본' 카테고리 → `400` 응답
+- [x] `DELETE /api/categories/:id` 타인 소유 → `403` 응답
+- [x] `DELETE /api/categories/:id` '기본' 카테고리 → `400` 응답
+- [x] 미인증 요청 → `401` 응답
+
+**의존성**: BE-05
+
+---
+
 #### BE-09. 라우터 통합 및 서버 기동 검증
 
 **목표**: 모든 라우터를 `app.js`에 등록하고 전체 API 동작 확인
 
 **작업 항목**
-- [x] `src/app.js`에 `authRoutes`, `todoRoutes`, `userRoutes` 등록
-  - `/api/auth`, `/api/todos`, `/api/users` 경로 매핑
+- [x] `src/app.js`에 `authRoutes`, `categoryRoutes`, `todoRoutes`, `userRoutes` 등록
+  - `/api/auth`, `/api/categories`, `/api/todos`, `/api/users` 경로 매핑
+- [x] `swagger-ui-express` 설치 및 `/api-docs` 경로에 Swagger UI 마운트
 - [x] `errorMiddleware` 마지막에 등록
 - [x] API 전체 흐름 수동 테스트 (curl 또는 REST Client)
-  - 회원가입 → 로그인 → 할 일 CRUD → 내 정보 수정 순서로 검증
+  - 회원가입 → 로그인 → 카테고리 CRUD → 할 일 CRUD → 내 정보 수정 순서로 검증
 
 **완료 조건**
 - [x] 모든 엔드포인트 HTTP 상태 코드 정상 반환 확인
 - [x] 인증 없이 보호된 라우트 접근 시 `401` 반환 확인
 - [x] 에러 발생 시 `{ "message": "..." }` 형식 응답 확인
+- [x] `http://localhost:3000/api-docs` 에서 Swagger UI 정상 노출 확인
 
-**의존성**: BE-05, BE-06, BE-07, BE-08
+**의존성**: BE-05, BE-06, BE-07, BE-08, BE-08a
 
 ---
 
@@ -794,7 +834,8 @@ BE-01 → BE-04      │
                    ↓
          BE-05 (회원가입) → BE-06 (로그인) → BE-07 (내 정보)
                                            → BE-08 (할 일 CRUD)
-                   BE-05, BE-06, BE-07, BE-08 → BE-09 (통합)
+         BE-05 → BE-08a (카테고리 CRUD)
+                   BE-05, BE-06, BE-07, BE-08, BE-08a → BE-09 (통합)
                                                     ↓
 FE-01 → FE-02 → FE-03                         (백엔드 준비)
 FE-01 → FE-02 → FE-04 ← BE-09
@@ -834,6 +875,7 @@ FE-16, FE-17 → FE-18
 | BE-06 | BE | 로그인 API | v1.0 |
 | BE-07 | BE | 내 정보 수정 API | v1.0 |
 | BE-08 | BE | 할 일 CRUD API | v1.0 |
+| BE-08a | BE | 카테고리 CRUD API | v1.0 |
 | BE-09 | BE | 라우터 통합 및 서버 기동 검증 | v1.0 |
 | FE-01 | FE | 프로젝트 초기화 | v1.0 |
 | FE-02 | FE | TypeScript 타입 정의 | v1.0 |

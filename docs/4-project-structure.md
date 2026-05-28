@@ -293,23 +293,26 @@ backend/
 ├── src/
 │   ├── routes/                     # 라우터: URL 정의 + 미들웨어 연결
 │   │   ├── authRoutes.js           # /api/auth
+│   │   ├── categoryRoutes.js       # /api/categories
 │   │   ├── todoRoutes.js           # /api/todos
 │   │   └── userRoutes.js           # /api/users
 │   │
 │   ├── controllers/                # 요청/응답 처리, 유효성 검사
 │   │   ├── authController.js
+│   │   ├── categoryController.js
 │   │   ├── todoController.js
 │   │   └── userController.js
 │   │
 │   ├── services/                   # 비즈니스 로직, 도메인 규칙
 │   │   ├── authService.js          # 회원가입, 로그인, 토큰 발급
+│   │   ├── categoryService.js      # 카테고리 CRUD, 기본 카테고리 보호
 │   │   ├── todoService.js          # 할 일 CRUD, 소유권 검사
 │   │   └── userService.js          # 내 정보 수정, 비밀번호 변경
 │   │
 │   ├── repositories/               # SQL 쿼리 실행 (pg 파라미터 바인딩)
+│   │   ├── categoryRepository.js
 │   │   ├── todoRepository.js
-│   │   ├── userRepository.js
-│   │   └── categoryRepository.js
+│   │   └── userRepository.js
 │   │
 │   ├── middlewares/                # Express 미들웨어
 │   │   ├── authMiddleware.js       # JWT 검증, req.user 주입
@@ -323,11 +326,14 @@ backend/
 │   │       └── 003_create_todos.sql
 │   │
 │   ├── utils/
+│   │   ├── logger.js               # 콘솔 로깅 유틸 (info / warn / error)
+│   │   ├── todoStatus.js           # 할 일 상태 런타임 계산 함수
 │   │   └── validate.js             # 공통 유효성 검사 함수
 │   │
 │   └── app.js                      # Express 앱 설정 (미들웨어, 라우터 등록)
 │
 ├── server.js                       # 서버 진입점 (포트 바인딩)
+├── swagger.json                    # OpenAPI 3.0 명세 (Swagger UI: /api-docs)
 ├── .env
 ├── .env.example
 ├── .eslintrc.js
@@ -346,6 +352,7 @@ backend/
 | `middlewares/` | JWT 인증 미들웨어, 전역 에러 핸들러 |
 | `db/pool.js` | pg Pool 단일 인스턴스 생성. 모든 Repository는 이를 import하여 사용 |
 | `db/migrations/` | 순서 있는 SQL DDL 파일. 직접 실행하여 스키마 적용 |
-| `utils/` | 레이어에 종속되지 않는 순수 유틸 함수 |
-| `app.js` | Express 앱 초기화, CORS·바디파서·라우터 등록 |
+| `utils/` | 레이어에 종속되지 않는 순수 유틸 함수 (로깅, 상태 계산, 유효성 검사) |
+| `app.js` | Express 앱 초기화, CORS·바디파서·라우터 등록, Swagger UI 마운트 |
 | `server.js` | `app.js`를 import하여 포트 리슨. 진입점만 담당 |
+| `swagger.json` | OpenAPI 3.0 명세. `/api-docs` 경로에서 Swagger UI로 확인 가능 |
