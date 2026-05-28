@@ -369,19 +369,19 @@
 **목표**: Vite + React 19 + TypeScript 프로젝트 뼈대 구성
 
 **작업 항목**
-- [ ] `npm create vite@latest frontend -- --template react-ts` 실행
-- [ ] 의존성 설치: `zustand`, `@tanstack/react-query`, `axios`, `react-router-dom`
-- [ ] 개발 의존성 설치: `eslint`, `prettier`, `@typescript-eslint/*`
-- [ ] 디렉토리 구조 생성: `src/api/`, `src/components/common/`, `src/components/todo/`, `src/components/layout/`, `src/hooks/`, `src/pages/`, `src/store/`, `src/types/`, `src/utils/`
-- [ ] `.env.example` 작성 (`VITE_API_BASE_URL`)
-- [ ] `.env` 작성 (`VITE_API_BASE_URL=http://localhost:3000/api`)
-- [ ] `src/constants.ts` 작성 (`API_BASE_URL = import.meta.env.VITE_API_BASE_URL`)
-- [ ] `.eslintrc.js`, `.prettierrc` 설정 (스페이스 2칸, 세미콜론, 작은따옴표, typescript-eslint)
-- [ ] `vite.config.ts`: 개발 서버 포트 5173 고정
+- [x] `npm create vite@latest frontend -- --template react-ts` 실행
+- [x] 의존성 설치: `zustand`, `@tanstack/react-query`, `axios`, `react-router-dom`
+- [x] 개발 의존성 설치: `eslint`, `prettier`, `@typescript-eslint/*`
+- [x] 디렉토리 구조 생성: `src/api/`, `src/components/common/`, `src/components/todo/`, `src/components/layout/`, `src/hooks/`, `src/pages/`, `src/store/`, `src/types/`, `src/utils/`
+- [x] `.env.example` 작성 (`VITE_API_BASE_URL`)
+- [x] `.env` 작성 (`VITE_API_BASE_URL=http://localhost:3000/api`)
+- [x] `src/constants.ts` 작성 (`API_BASE_URL = import.meta.env.VITE_API_BASE_URL`)
+- [x] `.prettierrc` 설정 (스페이스 2칸, 세미콜론, 작은따옴표, typescript-eslint), `eslint.config.js`에 prettier 통합
+- [x] `vite.config.ts`: 개발 서버 포트 5173 고정
 
 **완료 조건**
-- [ ] `npm run dev` → `http://localhost:5173` 접속 성공
-- [ ] TypeScript 컴파일 오류 없음
+- [x] `npm run dev` → `http://localhost:5173` 접속 성공
+- [x] TypeScript 컴파일 오류 없음
 
 **의존성**: 없음
 
