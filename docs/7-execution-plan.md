@@ -34,14 +34,14 @@
 **목표**: PostgreSQL 17 서버 준비 및 애플리케이션 전용 DB 생성
 
 **작업 항목**
-- [ ] PostgreSQL 17 로컬 설치 확인 (또는 Docker 컨테이너 실행)
-- [ ] `todolist` 데이터베이스 생성
-- [ ] 접속 전용 사용자(role) 생성 및 권한 부여
-- [ ] `DATABASE_URL` 접속 문자열 확인 (`postgres://user:password@localhost:5432/todolist`)
+- [x] PostgreSQL 17 로컬 설치 확인 (또는 Docker 컨테이너 실행)
+- [x] `todolist` 데이터베이스 생성
+- [x] 접속 전용 사용자(role) 생성 및 권한 부여
+- [x] `DATABASE_URL` 접속 문자열 확인 (`postgres://user:password@localhost:5432/todolist`)
 
 **완료 조건**
-- [ ] `psql` 또는 DB 클라이언트로 `todolist` DB 접속 성공
-- [ ] 접속 전용 사용자로 로그인 가능
+- [x] `psql` 또는 DB 클라이언트로 `todolist` DB 접속 성공
+- [x] 접속 전용 사용자로 로그인 가능
 
 **의존성**: 없음
 
@@ -52,21 +52,21 @@
 **목표**: `database/schema.sql` 기반으로 순서 있는 마이그레이션 파일 3개 작성
 
 **작업 항목**
-- [ ] `backend/src/db/migrations/001_create_users.sql` 작성
+- [x] `backend/src/db/migrations/001_create_users.sql` 작성
   - `users` 테이블 DDL (id, email, password, name, theme DEFAULT 'light', language DEFAULT 'ko', created_at)
   - `email` UNIQUE 제약, `theme`/`language` CHECK 제약
-- [ ] `backend/src/db/migrations/002_create_categories.sql` 작성
+- [x] `backend/src/db/migrations/002_create_categories.sql` 작성
   - `categories` 테이블 DDL (id, name, user_id FK)
   - `user_id` ON DELETE CASCADE
-- [ ] `backend/src/db/migrations/003_create_todos.sql` 작성
+- [x] `backend/src/db/migrations/003_create_todos.sql` 작성
   - `todos` 테이블 DDL (id, title, description, start_date, end_date, is_completed, category_id FK, user_id FK, created_at, updated_at)
   - `end_date >= start_date` CHECK 제약 (DR-TODO-03)
   - `updated_at` 자동 갱신 트리거 함수 + 트리거
   - 인덱스: `idx_todos_user_id`, `idx_todos_category_id`, `idx_categories_user_id`
 
 **완료 조건**
-- [ ] 마이그레이션 파일 3개 순서대로 실행 시 오류 없이 적용됨
-- [ ] 재실행(DROP → CREATE) 시에도 정상 동작
+- [x] 마이그레이션 파일 3개 순서대로 실행 시 오류 없이 적용됨
+- [x] 재실행(DROP → CREATE) 시에도 정상 동작
 
 **의존성**: DB-01
 
