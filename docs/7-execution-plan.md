@@ -77,15 +77,15 @@
 **목표**: 실제 DB에 스키마를 적용하고 구조 이상 여부 확인
 
 **작업 항목**
-- [ ] 마이그레이션 파일 3개 순서대로 실행
-- [ ] `\d users`, `\d categories`, `\d todos` 로 컬럼·제약·인덱스 확인
-- [ ] 트리거 동작 확인 (todos 레코드 UPDATE 시 `updated_at` 자동 갱신)
-- [ ] FK 제약 동작 확인 (없는 user_id 참조 시 오류 발생)
+- [x] 마이그레이션 파일 3개 순서대로 실행
+- [x] `\d users`, `\d categories`, `\d todos` 로 컬럼·제약·인덱스 확인
+- [x] 트리거 동작 확인 (todos 레코드 UPDATE 시 `updated_at` 자동 갱신)
+- [x] FK 제약 동작 확인 (없는 user_id 참조 시 오류 발생)
 
 **완료 조건**
-- [ ] 3개 테이블 정상 생성 확인
-- [ ] `end_date < start_date` 입력 시 CHECK 제약 오류 발생 확인
-- [ ] `updated_at` 트리거 정상 동작 확인
+- [x] 3개 테이블 정상 생성 확인
+- [x] `end_date < start_date` 입력 시 CHECK 제약 오류 발생 확인
+- [x] `updated_at` 트리거 정상 동작 확인
 
 **의존성**: DB-02
 
@@ -100,18 +100,18 @@
 **목표**: 백엔드 Node.js 프로젝트 뼈대 구성
 
 **작업 항목**
-- [ ] `backend/` 디렉토리 생성 및 `npm init` 실행
-- [ ] 의존성 설치: `express`, `pg`, `bcrypt`, `jsonwebtoken`, `cors`, `dotenv`
-- [ ] 개발 의존성 설치: `eslint`, `prettier`, `jest`, `supertest`, `nodemon`
-- [ ] 디렉토리 구조 생성: `src/routes/`, `src/controllers/`, `src/services/`, `src/repositories/`, `src/middlewares/`, `src/db/migrations/`, `src/utils/`
-- [ ] `.env.example` 작성 (PORT, DATABASE_URL, JWT_SECRET, JWT_EXPIRES_IN, BCRYPT_SALT_ROUNDS, CORS_ORIGIN)
-- [ ] `.env` 작성 (로컬 값 설정, gitignore 확인)
-- [ ] `.eslintrc.js`, `.prettierrc` 설정 (스페이스 2칸, 세미콜론, 작은따옴표)
-- [ ] `package.json` scripts 설정: `start`, `dev` (nodemon), `test`
+- [x] `backend/` 디렉토리 생성 및 `npm init` 실행
+- [x] 의존성 설치: `express`, `pg`, `bcrypt`, `jsonwebtoken`, `cors`, `dotenv`
+- [x] 개발 의존성 설치: `eslint`, `prettier`, `jest`, `supertest`, `nodemon`
+- [x] 디렉토리 구조 생성: `src/routes/`, `src/controllers/`, `src/services/`, `src/repositories/`, `src/middlewares/`, `src/db/migrations/`, `src/utils/`
+- [x] `.env.example` 작성 (PORT, DATABASE_URL, JWT_SECRET, JWT_EXPIRES_IN, BCRYPT_SALT_ROUNDS, CORS_ORIGIN)
+- [x] `.env` 작성 (로컬 값 설정, gitignore 확인)
+- [x] `.eslintrc.js`, `.prettierrc` 설정 (스페이스 2칸, 세미콜론, 작은따옴표)
+- [x] `package.json` scripts 설정: `start`, `dev` (nodemon), `test`
 
 **완료 조건**
-- [ ] `npm run dev` 실행 시 오류 없이 서버 프로세스 시작
-- [ ] `.env`가 `.gitignore`에 포함되어 있음
+- [x] `npm run dev` 실행 시 오류 없이 서버 프로세스 시작
+- [x] `.env`가 `.gitignore`에 포함되어 있음
 
 **의존성**: 없음
 
@@ -122,13 +122,13 @@
 **목표**: pg Pool 단일 인스턴스 생성 및 전체 Repository에서 공유 사용
 
 **작업 항목**
-- [ ] `src/db/pool.js` 작성: `DATABASE_URL` 환경변수로 pg Pool 생성 및 export
-- [ ] 서버 시작 시 필수 환경변수 누락 검사 로직 추가 (없으면 `process.exit(1)`)
-- [ ] DB 연결 테스트 쿼리 (`SELECT NOW()`) 실행 후 성공 로그 출력
+- [x] `src/db/pool.js` 작성: `DATABASE_URL` 환경변수로 pg Pool 생성 및 export
+- [x] 서버 시작 시 필수 환경변수 누락 검사 로직 추가 (없으면 `process.exit(1)`)
+- [x] DB 연결 테스트 쿼리 (`SELECT NOW()`) 실행 후 성공 로그 출력
 
 **완료 조건**
-- [ ] `npm run dev` 시 DB 연결 성공 로그 출력
-- [ ] `DATABASE_URL` 누락 시 프로세스 종료 확인
+- [x] `npm run dev` 시 DB 연결 성공 로그 출력
+- [x] `DATABASE_URL` 누락 시 프로세스 종료 확인
 
 **의존성**: BE-01, DB-03
 
@@ -139,21 +139,21 @@
 **목표**: Express 앱에 CORS, 바디파서, 인증, 에러 미들웨어 등록
 
 **작업 항목**
-- [ ] `src/app.js` 작성: `express()` 초기화, `cors` (CORS_ORIGIN 환경변수), `express.json()` 등록
-- [ ] `src/server.js` 작성: `app.js` import, PORT 바인딩
-- [ ] `src/middlewares/authMiddleware.js` 작성
+- [x] `src/app.js` 작성: `express()` 초기화, `cors` (CORS_ORIGIN 환경변수), `express.json()` 등록
+- [x] `src/server.js` 작성: `app.js` import, PORT 바인딩
+- [x] `src/middlewares/authMiddleware.js` 작성
   - `Authorization: Bearer <token>` 헤더 파싱
   - `jsonwebtoken.verify()` 로 JWT 검증
   - 유효 시 `req.user = { id, email }` 주입
   - 무효·만료 시 `401` 반환
-- [ ] `src/middlewares/errorMiddleware.js` 작성
+- [x] `src/middlewares/errorMiddleware.js` 작성
   - 전역 에러 핸들러 (`app.use((err, req, res, next) => ...)`)
   - `{ message }` 형식으로 에러 응답 반환
   - 상태 코드 매핑 (400, 401, 403, 404, 409, 500)
 
 **완료 조건**
-- [ ] 유효하지 않은 JWT로 요청 시 `401 { "message": "..." }` 반환 확인
-- [ ] 서버 내부 오류 발생 시 `500 { "message": "..." }` 반환 확인
+- [x] 유효하지 않은 JWT로 요청 시 `401 { "message": "..." }` 반환 확인
+- [x] 서버 내부 오류 발생 시 `500 { "message": "..." }` 반환 확인
 
 **의존성**: BE-01
 
@@ -164,14 +164,14 @@
 **목표**: 레이어 독립적인 유효성 검사 함수 작성
 
 **작업 항목**
-- [ ] `src/utils/validate.js` 작성
+- [x] `src/utils/validate.js` 작성
   - 이메일 형식 검사 (RFC 5322)
   - 비밀번호 강도 검사 (8~128자, 영문·숫자·특수문자 각 1자 이상)
   - 필수 항목 누락 검사 유틸
 
 **완료 조건**
-- [ ] 정상 이메일·비밀번호 → 검사 통과
-- [ ] 형식 오류 → 명확한 오류 메시지 반환
+- [x] 정상 이메일·비밀번호 → 검사 통과
+- [x] 형식 오류 → 명확한 오류 메시지 반환
 
 **의존성**: BE-01
 
@@ -182,29 +182,29 @@
 **목표**: `POST /api/auth/register` 구현
 
 **작업 항목**
-- [ ] `src/repositories/userRepository.js` 작성
+- [x] `src/repositories/userRepository.js` 작성
   - `findByEmail(email)`: 이메일로 사용자 조회
   - `createUser({ email, password, name })`: 사용자 생성
-- [ ] `src/repositories/categoryRepository.js` 작성
+- [x] `src/repositories/categoryRepository.js` 작성
   - `createDefaultCategory(userId)`: '기본' 카테고리 생성 (DR-CAT-01)
-- [ ] `src/services/authService.js` — `register()` 작성
+- [x] `src/services/authService.js` — `register()` 작성
   - 이메일 중복 검사 → 중복 시 409
   - bcrypt로 비밀번호 해싱 (BCRYPT_SALT_ROUNDS)
   - `userRepository.createUser()` 호출
   - `categoryRepository.createDefaultCategory()` 호출 (회원가입 직후 기본 카테고리 생성)
-- [ ] `src/controllers/authController.js` — `register()` 작성
+- [x] `src/controllers/authController.js` — `register()` 작성
   - 요청 body 파싱 (email, password, name)
   - `validate.js` 유효성 검사
   - `authService.register()` 호출
   - `201` 응답
-- [ ] `src/routes/authRoutes.js` 작성: `POST /api/auth/register` 라우팅
+- [x] `src/routes/authRoutes.js` 작성: `POST /api/auth/register` 라우팅
 
 **완료 조건**
-- [ ] 정상 요청 → `201` 응답, DB에 사용자 레코드 생성 확인
-- [ ] 이메일 중복 → `409 { "message": "이미 사용 중인 이메일입니다" }` 응답
-- [ ] 이메일 형식 오류 → `400` 응답
-- [ ] 비밀번호 강도 미달 → `400` 응답
-- [ ] 비밀번호가 bcrypt 해싱된 형태로 DB 저장 확인
+- [x] 정상 요청 → `201` 응답, DB에 사용자 레코드 생성 확인
+- [x] 이메일 중복 → `409 { "message": "이미 사용 중인 이메일입니다" }` 응답
+- [x] 이메일 형식 오류 → `400` 응답
+- [x] 비밀번호 강도 미달 → `400` 응답
+- [x] 비밀번호가 bcrypt 해싱된 형태로 DB 저장 확인
 
 **의존성**: BE-02, BE-03, BE-04
 
@@ -215,21 +215,21 @@
 **목표**: `POST /api/auth/login` 구현
 
 **작업 항목**
-- [ ] `src/services/authService.js` — `login()` 작성
+- [x] `src/services/authService.js` — `login()` 작성
   - `userRepository.findByEmail()` 로 사용자 조회
   - 사용자 없음 또는 bcrypt 비밀번호 불일치 → 401 (동일 메시지로 보안 유지)
   - JWT Access Token 발급 (payload: `{ id, email }`, `JWT_EXPIRES_IN`)
-- [ ] `src/controllers/authController.js` — `login()` 작성
+- [x] `src/controllers/authController.js` — `login()` 작성
   - body 파싱 (email, password)
   - `authService.login()` 호출
   - `200 { token, user: { id, email, name } }` 응답
-- [ ] `src/routes/authRoutes.js`: `POST /api/auth/login` 라우팅 추가
+- [x] `src/routes/authRoutes.js`: `POST /api/auth/login` 라우팅 추가
 
 **완료 조건**
-- [ ] 정상 요청 → `200 { token, user }` 응답
-- [ ] 이메일 미존재 → `401 { "message": "이메일 또는 비밀번호가 올바르지 않습니다" }` 응답
-- [ ] 비밀번호 불일치 → 동일한 `401` 메시지 응답
-- [ ] 발급된 토큰으로 인증 필요 API 호출 시 정상 처리
+- [x] 정상 요청 → `200 { token, user }` 응답
+- [x] 이메일 미존재 → `401 { "message": "이메일 또는 비밀번호가 올바르지 않습니다" }` 응답
+- [x] 비밀번호 불일치 → 동일한 `401` 메시지 응답
+- [x] 발급된 토큰으로 인증 필요 API 호출 시 정상 처리
 
 **의존성**: BE-05
 
@@ -240,23 +240,23 @@
 **목표**: `PUT /api/users/me` 구현 (이름·비밀번호 수정)
 
 **작업 항목**
-- [ ] `src/repositories/userRepository.js` 추가
+- [x] `src/repositories/userRepository.js` 추가
   - `findById(id)`: ID로 사용자 조회
   - `updateUser(id, { name, password })`: 사용자 정보 수정
-- [ ] `src/services/userService.js` 작성
+- [x] `src/services/userService.js` 작성
   - 현재 비밀번호 검증 (변경 시 필수)
   - bcrypt로 신규 비밀번호 해싱
   - `userRepository.updateUser()` 호출
-- [ ] `src/controllers/userController.js` 작성
+- [x] `src/controllers/userController.js` 작성
   - body 파싱 (name, currentPassword, newPassword)
   - `authMiddleware` 통해 주입된 `req.user.id` 사용
   - `userService` 호출, `200 { user }` 응답
-- [ ] `src/routes/userRoutes.js` 작성: `PUT /api/users/me` (authMiddleware 적용)
+- [x] `src/routes/userRoutes.js` 작성: `PUT /api/users/me` (authMiddleware 적용)
 
 **완료 조건**
-- [ ] 정상 요청 → `200`, 이름·비밀번호 수정 확인
-- [ ] 현재 비밀번호 불일치 → `401 { "message": "현재 비밀번호가 올바르지 않습니다" }` 응답
-- [ ] 미인증 요청 → `401` 응답
+- [x] 정상 요청 → `200`, 이름·비밀번호 수정 확인
+- [x] 현재 비밀번호 불일치 → `401 { "message": "현재 비밀번호가 올바르지 않습니다" }` 응답
+- [x] 미인증 요청 → `401` 응답
 
 **의존성**: BE-06
 
@@ -267,34 +267,34 @@
 **목표**: `POST/GET/PUT/DELETE /api/todos` 구현
 
 **작업 항목**
-- [ ] `src/repositories/todoRepository.js` 작성
+- [x] `src/repositories/todoRepository.js` 작성
   - `create({ title, description, startDate, endDate, categoryId, userId })`: 할 일 생성
   - `findAllByUser(userId, { categoryId, status })`: 사용자 할 일 목록 조회 (필터 지원)
   - `findById(id)`: 단건 조회
   - `update(id, fields)`: 할 일 수정
   - `remove(id)`: 할 일 삭제
-- [ ] `src/services/todoService.js` 작성
+- [x] `src/services/todoService.js` 작성
   - `create()`: categoryId 미지정 시 기본 카테고리 ID 자동 적용 (DR-CAT-01)
   - `getList()`: 목록 반환 (status 필터는 서버에서 날짜 계산)
   - `update()`: 소유권 검사 (req.user.id !== todo.userId → 403, DR-TODO-04), 날짜 유효성 (DR-TODO-03)
   - `remove()`: 소유권 검사 (DR-TODO-04)
-- [ ] `src/controllers/todoController.js` 작성
+- [x] `src/controllers/todoController.js` 작성
   - DB snake_case → 응답 camelCase 변환
   - 각 액션별 유효성 검사 (제목 1~100자, 날짜 형식 YYYY-MM-DD)
-- [ ] `src/routes/todoRoutes.js` 작성 (모든 라우트에 authMiddleware 적용)
+- [x] `src/routes/todoRoutes.js` 작성 (모든 라우트에 authMiddleware 적용)
   - `POST /api/todos` (UC-04)
   - `GET /api/todos` (UC-05, query: categoryId, status)
   - `PUT /api/todos/:id` (UC-06)
   - `DELETE /api/todos/:id` (UC-07)
 
 **완료 조건**
-- [ ] `POST /api/todos` → `201`, DB 레코드 생성 확인
-- [ ] `GET /api/todos` → 본인 할 일만 반환 확인
-- [ ] 카테고리·상태 필터 적용 시 정상 필터링 확인
-- [ ] `PUT /api/todos/:id` 타인 소유 → `403` 응답
-- [ ] `DELETE /api/todos/:id` 타인 소유 → `403` 응답
-- [ ] `end_date < start_date` 요청 → `400` 응답
-- [ ] 미인증 요청 → `401` 응답
+- [x] `POST /api/todos` → `201`, DB 레코드 생성 확인
+- [x] `GET /api/todos` → 본인 할 일만 반환 확인
+- [x] 카테고리·상태 필터 적용 시 정상 필터링 확인
+- [x] `PUT /api/todos/:id` 타인 소유 → `403` 응답
+- [x] `DELETE /api/todos/:id` 타인 소유 → `403` 응답
+- [x] `end_date < start_date` 요청 → `400` 응답
+- [x] 미인증 요청 → `401` 응답
 
 **의존성**: BE-06
 
@@ -305,16 +305,16 @@
 **목표**: 모든 라우터를 `app.js`에 등록하고 전체 API 동작 확인
 
 **작업 항목**
-- [ ] `src/app.js`에 `authRoutes`, `todoRoutes`, `userRoutes` 등록
+- [x] `src/app.js`에 `authRoutes`, `todoRoutes`, `userRoutes` 등록
   - `/api/auth`, `/api/todos`, `/api/users` 경로 매핑
-- [ ] `errorMiddleware` 마지막에 등록
-- [ ] API 전체 흐름 수동 테스트 (curl 또는 REST Client)
+- [x] `errorMiddleware` 마지막에 등록
+- [x] API 전체 흐름 수동 테스트 (curl 또는 REST Client)
   - 회원가입 → 로그인 → 할 일 CRUD → 내 정보 수정 순서로 검증
 
 **완료 조건**
-- [ ] 모든 엔드포인트 HTTP 상태 코드 정상 반환 확인
-- [ ] 인증 없이 보호된 라우트 접근 시 `401` 반환 확인
-- [ ] 에러 발생 시 `{ "message": "..." }` 형식 응답 확인
+- [x] 모든 엔드포인트 HTTP 상태 코드 정상 반환 확인
+- [x] 인증 없이 보호된 라우트 접근 시 `401` 반환 확인
+- [x] 에러 발생 시 `{ "message": "..." }` 형식 응답 확인
 
 **의존성**: BE-05, BE-06, BE-07, BE-08
 
