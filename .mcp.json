@@ -7,6 +7,14 @@
     "postgresql-mcp": {
       "command": "npx",
       "args": ["-y", "@henkey/postgres-mcp-server"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
     }
   }
 }
