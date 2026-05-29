@@ -1,0 +1,76 @@
+.page {
+  min-height: 100vh;
+  background: #f6f8fc;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #202124;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.submitBtn {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.errorBox {
+  background: #fce8e6;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 14px;
+  color: #d93025;
+  text-align: center;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.footerLink {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 24px 16px;
+  }
+}

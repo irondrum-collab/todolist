@@ -1,0 +1,120 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  min-height: 48px;
+}
+
+.row:hover {
+  background: #f1f3f4;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #5f6368;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  background: transparent;
+}
+
+.checkbox.checked {
+  background: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.checkMark {
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: #202124;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title.completed {
+  font-weight: 400;
+  color: #5f6368;
+  text-decoration: line-through;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge_시작전 { color: #5f6368; background: #f1f3f4; }
+.badge_진행중 { color: #1a73e8; background: #d3e3fd; }
+.badge_완료   { color: #1e8e3e; background: #e6f4ea; }
+.badge_기한초과 { color: #d93025; background: #fce8e6; }
+.badge_날짜없음 { color: #f9ab00; background: #fef7e0; }
+
+.date {
+  font-size: 12px;
+  color: #5f6368;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.row:hover .actions {
+  opacity: 1;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.editBtn {
+  color: #1a73e8;
+}
+
+.editBtn:hover {
+  background: #d3e3fd;
+}
+
+.deleteBtn {
+  color: #d93025;
+}
+
+.deleteBtn:hover {
+  background: #fce8e6;
+}

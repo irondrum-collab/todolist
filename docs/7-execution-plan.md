@@ -392,18 +392,18 @@
 **목표**: 도메인 엔티티 타입 정의 (백엔드 API 응답 기준 camelCase)
 
 **작업 항목**
-- [ ] `src/types/user.ts` 작성
+- [x] `src/types/user.ts` 작성
   - `User`: `{ id, email, name, theme, language, createdAt }`
   - `LoginResponse`: `{ token, user: User }`
-- [ ] `src/types/todo.ts` 작성
+- [x] `src/types/todo.ts` 작성
   - `Todo`: `{ id, title, description, startDate, endDate, isCompleted, categoryId, userId, createdAt, updatedAt }`
   - `Category`: `{ id, name, userId }`
   - `TodoStatus`: `'시작 전' | '진행 중' | '완료' | '기한 초과' | '진행 중 (날짜 없음)'`
   - `CreateTodoInput`, `UpdateTodoInput` 타입
 
 **완료 조건**
-- [ ] 모든 타입 파일 TypeScript 컴파일 오류 없음
-- [ ] 타입이 백엔드 API 응답 camelCase 필드명과 일치
+- [x] 모든 타입 파일 TypeScript 컴파일 오류 없음
+- [x] 타입이 백엔드 API 응답 camelCase 필드명과 일치
 
 **의존성**: FE-01
 
@@ -414,14 +414,14 @@
 **목표**: 할 일 상태 계산 및 날짜 포맷 유틸 작성
 
 **작업 항목**
-- [ ] `src/utils/todoStatus.ts` 작성
+- [x] `src/utils/todoStatus.ts` 작성
   - `calcTodoStatus(todo: Todo): TodoStatus` 함수
   - 상태 계산 로직 (DR-STATUS-01 ~ DR-STATUS-04): isCompleted, startDate, endDate, 오늘 날짜 기준
-- [ ] `src/utils/dateFormatter.ts` 작성
+- [x] `src/utils/dateFormatter.ts` 작성
   - `formatDate(date: string | null): string` 함수 (YYYY-MM-DD → 표시용 포맷)
 
 **완료 조건**
-- [ ] `calcTodoStatus()` — 5가지 상태 케이스 각각 올바른 결과 반환 확인
+- [x] `calcTodoStatus()` — 5가지 상태 케이스 각각 올바른 결과 반환 확인
   - isCompleted=true → '완료'
   - isCompleted=false, 날짜 없음 → '진행 중 (날짜 없음)'
   - isCompleted=false, 오늘 < startDate → '시작 전'
@@ -437,21 +437,21 @@
 **목표**: 백엔드 REST API 호출 함수 작성 (axios 기반)
 
 **작업 항목**
-- [ ] axios 인스턴스 생성 (`baseURL = API_BASE_URL`, 요청 인터셉터에서 `Authorization: Bearer <token>` 헤더 자동 주입, 응답 인터셉터에서 401 → 로그인 페이지 리다이렉트)
-- [ ] `src/api/authApi.ts` 작성
+- [x] axios 인스턴스 생성 (`baseURL = API_BASE_URL`, 요청 인터셉터에서 `Authorization: Bearer <token>` 헤더 자동 주입, 응답 인터셉터에서 401 → 로그인 페이지 리다이렉트)
+- [x] `src/api/authApi.ts` 작성
   - `register({ email, password, name })`: POST `/auth/register`
   - `login({ email, password })`: POST `/auth/login` → `LoginResponse`
-- [ ] `src/api/todoApi.ts` 작성
+- [x] `src/api/todoApi.ts` 작성
   - `getTodos({ categoryId?, status? })`: GET `/todos`
   - `createTodo(input: CreateTodoInput)`: POST `/todos`
   - `updateTodo(id, input: UpdateTodoInput)`: PUT `/todos/:id`
   - `deleteTodo(id)`: DELETE `/todos/:id`
-- [ ] `src/api/userApi.ts` 작성
+- [x] `src/api/userApi.ts` 작성
   - `updateMe({ name?, currentPassword?, newPassword? })`: PUT `/users/me`
 
 **완료 조건**
-- [ ] 실행 중인 백엔드에 각 API 함수 호출 시 정상 응답 수신 확인
-- [ ] 401 응답 시 로그인 페이지로 리다이렉트 동작 확인
+- [x] 실행 중인 백엔드에 각 API 함수 호출 시 정상 응답 수신 확인
+- [x] 401 응답 시 로그인 페이지로 리다이렉트 동작 확인
 
 **의존성**: FE-01, FE-02, BE-09
 
@@ -462,7 +462,7 @@
 **목표**: 로그인 상태·토큰·사용자 정보 전역 관리
 
 **작업 항목**
-- [ ] `src/store/authStore.ts` 작성
+- [x] `src/store/authStore.ts` 작성
   - state: `token: string | null`, `user: User | null`
   - actions: `setAuth(token, user)`, `clearAuth()`
   - `localStorage`에서 토큰 초기화 (새로고침 유지)
@@ -470,8 +470,8 @@
   - 로그아웃 시 `localStorage.removeItem('token')` 제거
 
 **완료 조건**
-- [ ] 로그인 후 새로고침 시 인증 상태 유지 확인
-- [ ] 로그아웃 후 `token`이 `null`로 초기화 확인
+- [x] 로그인 후 새로고침 시 인증 상태 유지 확인
+- [x] 로그아웃 후 `token`이 `null`로 초기화 확인
 
 **의존성**: FE-02
 
@@ -482,20 +482,20 @@
 **목표**: 서버 데이터 fetch·캐싱·mutation 훅 작성
 
 **작업 항목**
-- [ ] `src/main.tsx`에 `QueryClientProvider` 설정
-- [ ] `src/hooks/useAuth.ts` 작성
+- [x] `src/main.tsx`에 `QueryClientProvider` 설정
+- [x] `src/hooks/useAuth.ts` 작성
   - `useLogin()`: `useMutation` (login API 호출 → `authStore.setAuth()`)
   - `useRegister()`: `useMutation` (register API 호출)
-- [ ] `src/hooks/useTodos.ts` 작성
+- [x] `src/hooks/useTodos.ts` 작성
   - `useTodos(filters)`: `useQuery` (getTodos API 호출, queryKey에 filters 포함)
-- [ ] `src/hooks/useTodoMutations.ts` 작성
+- [x] `src/hooks/useTodoMutations.ts` 작성
   - `useCreateTodo()`: `useMutation` → onSuccess 시 todos 쿼리 invalidate
   - `useUpdateTodo()`: `useMutation` → onSuccess 시 todos 쿼리 invalidate
   - `useDeleteTodo()`: `useMutation` → onSuccess 시 todos 쿼리 invalidate
 
 **완료 조건**
-- [ ] `useTodos()` 호출 시 백엔드에서 데이터 fetch 및 캐싱 동작 확인
-- [ ] 할 일 생성·수정·삭제 후 목록 자동 갱신 확인
+- [x] `useTodos()` 호출 시 백엔드에서 데이터 fetch 및 캐싱 동작 확인
+- [x] 할 일 생성·수정·삭제 후 목록 자동 갱신 확인
 
 **의존성**: FE-04, FE-05
 
@@ -506,13 +506,13 @@
 **목표**: 재사용 가능한 기본 컴포넌트 제작
 
 **작업 항목**
-- [ ] `src/components/common/Button.tsx`: variant(primary/secondary/danger), disabled, loading 상태
-- [ ] `src/components/common/Input.tsx`: label, errorMessage, type 지원
-- [ ] `src/components/common/Modal.tsx`: isOpen, onClose, children, 확인 다이얼로그 지원
+- [x] `src/components/common/Button.tsx`: variant(primary/secondary/danger), disabled, loading 상태
+- [x] `src/components/common/Input.tsx`: label, errorMessage, type 지원
+- [x] `src/components/common/Modal.tsx`: isOpen, onClose, children, 확인 다이얼로그 지원
 
 **완료 조건**
-- [ ] 375px ~ 1440px 뷰포트에서 레이아웃 깨짐 없음
-- [ ] 각 컴포넌트 variant·상태별 렌더링 정상 확인
+- [x] 375px ~ 1440px 뷰포트에서 레이아웃 깨짐 없음
+- [x] 각 컴포넌트 variant·상태별 렌더링 정상 확인
 
 **의존성**: FE-01
 
@@ -523,14 +523,14 @@
 **목표**: 전체 페이지 공통 헤더 제작
 
 **작업 항목**
-- [ ] `src/components/layout/Header.tsx` 작성
+- [x] `src/components/layout/Header.tsx` 작성
   - 로그인 상태: 사용자 이름 표시, 로그아웃 버튼, 내 정보 링크
   - 비로그인 상태: 로그인·회원가입 링크
   - 반응형: 375px ~ 1440px 대응
 
 **완료 조건**
-- [ ] 로그인·비로그인 상태별 헤더 UI 정상 렌더링 확인
-- [ ] 로그아웃 클릭 시 `authStore.clearAuth()` 호출 및 로그인 페이지 이동 확인
+- [x] 로그인·비로그인 상태별 헤더 UI 정상 렌더링 확인
+- [x] 로그아웃 클릭 시 `authStore.clearAuth()` 호출 및 로그인 페이지 이동 확인
 
 **의존성**: FE-05, FE-07
 
@@ -541,22 +541,22 @@
 **목표**: UC-01, UC-02 화면 구현
 
 **작업 항목**
-- [ ] `src/pages/RegisterPage.tsx` 작성
+- [x] `src/pages/RegisterPage.tsx` 작성
   - 이메일·비밀번호·이름 입력 폼
   - 클라이언트 측 유효성 검사 (필수 항목, 형식)
   - `useRegister()` 호출, 성공 시 로그인 페이지 이동
   - 필드별 인라인 오류 메시지 표시
-- [ ] `src/pages/LoginPage.tsx` 작성
+- [x] `src/pages/LoginPage.tsx` 작성
   - 이메일·비밀번호 입력 폼
   - `useLogin()` 호출, 성공 시 할 일 목록 페이지 이동
   - 오류 메시지 표시 ("이메일 또는 비밀번호가 올바르지 않습니다")
 
 **완료 조건**
-- [ ] 정상 회원가입 → 로그인 페이지 이동 확인
-- [ ] 이메일 중복 → 409 오류 메시지 표시 확인
-- [ ] 정상 로그인 → 할 일 목록 페이지 이동 및 인증 상태 유지 확인
-- [ ] 필수 항목 미입력 시 제출 차단 확인
-- [ ] 모바일(375px) / 데스크톱(1440px) 레이아웃 정상 확인
+- [x] 정상 회원가입 → 로그인 페이지 이동 확인
+- [x] 이메일 중복 → 409 오류 메시지 표시 확인
+- [x] 정상 로그인 → 할 일 목록 페이지 이동 및 인증 상태 유지 확인
+- [x] 필수 항목 미입력 시 제출 차단 확인
+- [x] 모바일(375px) / 데스크톱(1440px) 레이아웃 정상 확인
 
 **의존성**: FE-06, FE-07, FE-08
 
@@ -567,33 +567,33 @@
 **목표**: 할 일 CRUD 전체 화면 구현
 
 **작업 항목**
-- [ ] `src/components/todo/TodoFilter.tsx` 작성
+- [x] `src/components/todo/TodoFilter.tsx` 작성
   - 카테고리 필터 (전체 / 개별)
   - 상태 필터 (전체 / 시작 전 / 진행 중 / 완료 / 기한 초과)
-- [ ] `src/components/todo/TodoItem.tsx` 작성
+- [x] `src/components/todo/TodoItem.tsx` 작성
   - 제목·상태·카테고리·날짜 표시 (`calcTodoStatus()` 사용)
   - 수정·삭제 버튼 (삭제 시 Modal 확인 다이얼로그)
   - 완료 여부 토글 체크박스
-- [ ] `src/components/todo/TodoList.tsx` 작성
+- [x] `src/components/todo/TodoList.tsx` 작성
   - `useTodos()` 훅 사용
   - 빈 목록 시 "등록된 할 일이 없습니다" 표시
-- [ ] `src/components/todo/TodoForm.tsx` 작성
+- [x] `src/components/todo/TodoForm.tsx` 작성
   - 제목(필수), 설명(선택), 카테고리 선택, 시작일·종료일 캘린더 선택
   - 등록 / 수정 모드 공용 (기존 데이터 미리 채우기)
   - 날짜 유효성: end_date >= start_date (DR-TODO-03)
   - `useCreateTodo()` / `useUpdateTodo()` 호출
-- [ ] `src/pages/TodoListPage.tsx` 작성
+- [x] `src/pages/TodoListPage.tsx` 작성
   - `TodoFilter`, `TodoList`, `TodoForm` 통합
   - 미인증 접근 시 로그인 페이지 리다이렉트
 
 **완료 조건**
-- [ ] 할 일 등록 → 목록 즉시 반영 확인
-- [ ] 카테고리·상태 필터 변경 시 목록 정상 필터링 확인
-- [ ] 할 일 수정 → 기존 데이터 폼에 미리 채워짐 확인
-- [ ] 삭제 확인 다이얼로그 → 확인 시 삭제 처리 확인
-- [ ] 5가지 상태 각각 올바른 배지/텍스트 표시 확인
-- [ ] `end_date < start_date` 입력 시 "종료일자는 시작일자 이후여야 합니다" 메시지 표시 확인
-- [ ] 모바일(375px) / 데스크톱(1440px) 레이아웃 정상 확인
+- [x] 할 일 등록 → 목록 즉시 반영 확인
+- [x] 카테고리·상태 필터 변경 시 목록 정상 필터링 확인
+- [x] 할 일 수정 → 기존 데이터 폼에 미리 채워짐 확인
+- [x] 삭제 확인 다이얼로그 → 확인 시 삭제 처리 확인
+- [x] 5가지 상태 각각 올바른 배지/텍스트 표시 확인
+- [x] `end_date < start_date` 입력 시 "종료일자는 시작일자 이후여야 합니다" 메시지 표시 확인
+- [x] 모바일(375px) / 데스크톱(1440px) 레이아웃 정상 확인
 
 **의존성**: FE-06, FE-07, FE-08
 
@@ -604,16 +604,16 @@
 **목표**: 이름·비밀번호 수정 화면 구현
 
 **작업 항목**
-- [ ] `src/pages/ProfilePage.tsx` 작성
+- [x] `src/pages/ProfilePage.tsx` 작성
   - 현재 이름 표시 및 수정 인풋
   - 현재 비밀번호·신규 비밀번호·확인 인풋
   - `userApi.updateMe()` 호출, 성공 시 메시지 표시
   - 현재 비밀번호 불일치 시 인라인 오류 표시
 
 **완료 조건**
-- [ ] 이름 수정 → 헤더 사용자명 즉시 반영 확인
-- [ ] 비밀번호 변경 → 변경된 비밀번호로 재로그인 성공 확인
-- [ ] 현재 비밀번호 불일치 → 오류 메시지 표시 확인
+- [x] 이름 수정 → 헤더 사용자명 즉시 반영 확인
+- [x] 비밀번호 변경 → 변경된 비밀번호로 재로그인 성공 확인
+- [x] 현재 비밀번호 불일치 → 오류 메시지 표시 확인
 
 **의존성**: FE-06, FE-07, FE-08
 
@@ -624,17 +624,17 @@
 **목표**: React Router 설정 및 인증 기반 라우트 가드 적용
 
 **작업 항목**
-- [ ] `src/App.tsx` 작성
+- [x] `src/App.tsx` 작성
   - `/login` → `LoginPage`
   - `/register` → `RegisterPage`
   - `/todos` → `TodoListPage` (인증 필요)
   - `/profile` → `ProfilePage` (인증 필요)
   - `/` → `/todos` 리다이렉트
-- [ ] 보호 라우트 컴포넌트 작성: 비인증 시 `/login` 리다이렉트
+- [x] 보호 라우트 컴포넌트 작성: 비인증 시 `/login` 리다이렉트
 
 **완료 조건**
-- [ ] 비인증 상태에서 `/todos` 접근 시 `/login` 리다이렉트 확인
-- [ ] 로그인 후 `/login` 접근 시 `/todos` 리다이렉트 확인
+- [x] 비인증 상태에서 `/todos` 접근 시 `/login` 리다이렉트 확인
+- [x] 로그인 후 `/login` 접근 시 `/todos` 리다이렉트 확인
 
 **의존성**: FE-09, FE-10, FE-11
 
