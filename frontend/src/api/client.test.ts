@@ -4,12 +4,9 @@ import { apiClient } from './client';
 
 const mock = new MockAdapter(apiClient);
 
-let locationHref = '';
-
 beforeEach(() => {
   mock.reset();
   localStorage.clear();
-  locationHref = '';
   Object.defineProperty(window, 'location', {
     value: { href: '' },
     writable: true,

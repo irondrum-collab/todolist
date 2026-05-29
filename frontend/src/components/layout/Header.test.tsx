@@ -39,7 +39,7 @@ beforeEach(() => {
   useAuthStore.setState({ token: null, user: null, theme: 'light', language: 'ko' });
   mockNavigate.mockClear();
   mockSaveTheme.mockClear();
-  vi.mocked(useUpdateMe).mockReturnValue({ mutate: mockSaveTheme, isPending: false } as ReturnType<typeof useUpdateMe>);
+  vi.mocked(useUpdateMe).mockReturnValue({ mutate: mockSaveTheme, isPending: false } as unknown as ReturnType<typeof useUpdateMe>);
 });
 
 describe('Header — 비로그인 상태', () => {
