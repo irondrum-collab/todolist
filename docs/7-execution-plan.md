@@ -582,8 +582,15 @@
   - 등록 / 수정 모드 공용 (기존 데이터 미리 채우기)
   - 날짜 유효성: end_date >= start_date (DR-TODO-03)
   - `useCreateTodo()` / `useUpdateTodo()` 호출
+- [x] `src/components/todo/CategoryManager.tsx` 작성
+  - 카테고리 목록 표시 (이름·수정·삭제 버튼)
+  - '기본' 카테고리는 수정·삭제 버튼 미표시 (DR-CAT-02, DR-CAT-03)
+  - 인라인 편집 (Enter 저장 / Escape 취소)
+  - 삭제 확인 Modal
+  - 새 카테고리 추가 폼
+  - `useCreateCategory()` / `useUpdateCategory()` / `useDeleteCategory()` 훅 사용
 - [x] `src/pages/TodoListPage.tsx` 작성
-  - `TodoFilter`, `TodoList`, `TodoForm` 통합
+  - `TodoFilter`, `CategoryManager`, `TodoList`, `TodoForm` 통합
   - 미인증 접근 시 로그인 페이지 리다이렉트
 
 **완료 조건**
@@ -593,6 +600,10 @@
 - [x] 삭제 확인 다이얼로그 → 확인 시 삭제 처리 확인
 - [x] 5가지 상태 각각 올바른 배지/텍스트 표시 확인
 - [x] `end_date < start_date` 입력 시 "종료일자는 시작일자 이후여야 합니다" 메시지 표시 확인
+- [x] 카테고리 추가 → 목록 즉시 반영 확인
+- [x] 카테고리 수정 → 할 일 목록의 카테고리 배지 즉시 반영 확인
+- [x] 카테고리 삭제 (확인 후) → 목록 즉시 갱신 확인
+- [x] '기본' 카테고리 수정·삭제 버튼 미노출 확인
 - [x] 모바일(375px) / 데스크톱(1440px) 레이아웃 정상 확인
 
 **의존성**: FE-06, FE-07, FE-08

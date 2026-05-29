@@ -118,7 +118,7 @@ export function TodoForm({ editingTodo, categories, onCancel }: TodoFormProps) {
               setForm((f) => ({ ...f, categoryId: e.target.value ? Number(e.target.value) : undefined }))
             }
           >
-            <option value="">기본</option>
+            <option value="">-- 선택 --</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}

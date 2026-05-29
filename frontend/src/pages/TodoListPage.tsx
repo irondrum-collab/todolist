@@ -6,6 +6,7 @@ import { Header } from '../components/layout/Header';
 import { TodoFilter } from '../components/todo/TodoFilter';
 import { TodoList } from '../components/todo/TodoList';
 import { TodoForm } from '../components/todo/TodoForm';
+import { CategoryManager } from '../components/todo/CategoryManager';
 import { Modal } from '../components/common/Modal';
 import type { Todo, TodoFilters, TodoStatus } from '../types/todo';
 import styles from './TodoListPage.module.css';
@@ -42,10 +43,12 @@ export function TodoListPage() {
           {(showFilterMobile || true) && (
             <div style={{ display: showFilterMobile ? 'block' : 'none' }} className="mobile-filter">
               <TodoFilter filters={filters} categories={categories} onChange={setFilters} />
+              <CategoryManager categories={categories} />
             </div>
           )}
           <div className="desktop-filter">
             <TodoFilter filters={filters} categories={categories} onChange={setFilters} />
+            <CategoryManager categories={categories} />
           </div>
         </aside>
 
