@@ -5,6 +5,6 @@ const { Pool, types } = require('pg');
 // 문자열 그대로 반환하도록 파서를 재정의한다.
 types.setTypeParser(1082, (val) => val);
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL, client_encoding: 'UTF8' });
 
 module.exports = pool;
