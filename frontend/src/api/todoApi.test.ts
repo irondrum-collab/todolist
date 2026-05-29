@@ -27,7 +27,7 @@ beforeEach(() => {
 
 describe('getTodos', () => {
   it('GET /todos를 호출하고 목록을 반환한다', async () => {
-    mock.onGet('/todos').reply(200, [mockTodo]);
+    mock.onGet('/todos').reply(200, { todos: [mockTodo] });
 
     const result = await getTodos();
 
@@ -37,7 +37,7 @@ describe('getTodos', () => {
   });
 
   it('categoryId 필터를 쿼리 파라미터로 전달한다', async () => {
-    mock.onGet('/todos').reply(200, []);
+    mock.onGet('/todos').reply(200, { todos: [] });
 
     await getTodos({ categoryId: 2 });
 
@@ -45,7 +45,7 @@ describe('getTodos', () => {
   });
 
   it('status 필터를 쿼리 파라미터로 전달한다', async () => {
-    mock.onGet('/todos').reply(200, []);
+    mock.onGet('/todos').reply(200, { todos: [] });
 
     await getTodos({ status: '진행 중' });
 
@@ -53,7 +53,7 @@ describe('getTodos', () => {
   });
 
   it('status가 전체이면 파라미터에 포함하지 않는다', async () => {
-    mock.onGet('/todos').reply(200, []);
+    mock.onGet('/todos').reply(200, { todos: [] });
 
     await getTodos({ status: '전체' });
 
@@ -63,7 +63,7 @@ describe('getTodos', () => {
 
 describe('createTodo', () => {
   it('POST /todos를 올바른 payload로 호출하고 생성된 Todo를 반환한다', async () => {
-    mock.onPost('/todos').reply(201, mockTodo);
+    mock.onPost('/todos').reply(201, { todo: mockTodo });
 
     const result = await createTodo({ title: '테스트 할 일' });
 
@@ -77,7 +77,7 @@ describe('createTodo', () => {
 describe('updateTodo', () => {
   it('PUT /todos/:id를 올바른 payload로 호출하고 수정된 Todo를 반환한다', async () => {
     const updated = { ...mockTodo, title: '수정된 할 일' };
-    mock.onPut('/todos/1').reply(200, updated);
+    mock.onPut('/todos/1').reply(200, { todo: updated });
 
     const result = await updateTodo(1, { title: '수정된 할 일' });
 
