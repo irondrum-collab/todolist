@@ -112,4 +112,56 @@ describe('PUT /api/users/me', () => {
     expect(res.body.user).toHaveProperty('email', TEST_EMAIL);
     expect(res.body.user).toHaveProperty('createdAt');
   });
+
+  test('theme 변경 (dark) → 200, user.theme === "dark"', async () => {
+    const res = await request(app)
+      .put('/api/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ theme: 'dark' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.user).toHaveProperty('theme', 'dark');
+
+    // 원래 값으로 복구
+    await request(app)
+      .put('/api/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ theme: 'light' });
+  });
+
+  test('language 변경 (en) → 200, user.language === "en"', async () => {
+    const res = await request(app)
+      .put('/api/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ language: 'en' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.user).toHaveProperty('language', 'en');
+
+    // 원래 값으로 복구
+    await request(app)
+      .put('/api/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ language: 'ko' });
+  });
+
+  test('유효하지 않은 theme → 400', async () => {
+    const res = await request(app)
+      .put('/api/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ theme: 'invalid' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('message');
+  });
+
+  test('유효하지 않은 language → 400', async () => {
+    const res = await request(app)
+      .put('/api/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ language: 'fr' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('message');
+  });
 });

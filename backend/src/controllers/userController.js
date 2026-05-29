@@ -3,7 +3,7 @@ const userService = require('../services/userService');
 
 const updateMe = async (req, res, next) => {
   try {
-    const { name, currentPassword, newPassword } = req.body;
+    const { name, currentPassword, newPassword, theme, language } = req.body;
     const userId = req.user.id;
 
     // name 유효성: 있으면 1~50자
@@ -22,7 +22,21 @@ const updateMe = async (req, res, next) => {
       return next(err);
     }
 
-    const user = await userService.updateMe(userId, { name: name?.trim(), currentPassword, newPassword });
+    // theme 유효성: 있으면 'light' | 'dark'
+    if (theme !== undefined && !['light', 'dark'].includes(theme)) {
+      const err = new Error("theme은 'light' 또는 'dark'이어야 합니다.");
+      err.status = 400;
+      return next(err);
+    }
+
+    // language 유효성: 있으면 'ko' | 'en'
+    if (language !== undefined && !['ko', 'en'].includes(language)) {
+      const err = new Error("language는 'ko' 또는 'en'이어야 합니다.");
+      err.status = 400;
+      return next(err);
+    }
+
+    const user = await userService.updateMe(userId, { name: name?.trim(), currentPassword, newPassword, theme, language });
     res.status(200).json({ user });
   } catch (err) {
     next(err);

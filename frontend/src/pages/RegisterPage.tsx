@@ -1,34 +1,22 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useRegister } from '../hooks/useAuth';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import { Header } from '../components/layout/Header';
 import styles from './auth.module.css';
 
-function getErrorMessage(error: unknown): string {
+function getErrorMessage(error: unknown, fallback: string): string {
   if (error && typeof error === 'object' && 'response' in error) {
     const res = (error as { response?: { data?: { message?: string } } }).response;
     if (res?.data?.message) return res.data.message;
   }
-  return '회원가입에 실패했습니다. 다시 시도해 주세요.';
-}
-
-function validateEmail(email: string): string {
-  if (!email) return '이메일을 입력해 주세요';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return '올바른 이메일 형식이 아닙니다';
-  return '';
-}
-
-function validatePassword(password: string): string {
-  if (!password) return '비밀번호를 입력해 주세요';
-  if (password.length < 8) return '8자 이상 입력해 주세요';
-  if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password) || !/[^a-zA-Z0-9]/.test(password))
-    return '영문·숫자·특수문자를 각 1자 이상 포함해야 합니다';
-  return '';
+  return fallback;
 }
 
 export function RegisterPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { mutate: register, isPending, isError, error } = useRegister();
 
@@ -37,16 +25,28 @@ export function RegisterPage() {
   const [password, setPassword] = useState('');
   const [touched, setTouched] = useState({ name: false, email: false, password: false });
 
-  const nameError = touched.name && !name ? '이름을 입력해 주세요' : '';
+  const validateEmail = (v: string) => {
+    if (!v) return t('auth.email_required');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return t('auth.email_invalid');
+    return '';
+  };
+
+  const validatePassword = (v: string) => {
+    if (!v) return t('auth.password_required');
+    if (v.length < 8) return t('auth.password_min_length');
+    if (!/[a-zA-Z]/.test(v) || !/[0-9]/.test(v) || !/[^a-zA-Z0-9]/.test(v))
+      return t('auth.password_strength');
+    return '';
+  };
+
+  const nameError = touched.name && !name ? t('auth.name_required') : '';
   const emailError = touched.email ? validateEmail(email) : '';
   const passwordError = touched.password ? validatePassword(password) : '';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setTouched({ name: true, email: true, password: true });
-    const eErr = validateEmail(email);
-    const pErr = validatePassword(password);
-    if (!name || eErr || pErr) return;
+    if (!name || validateEmail(email) || validatePassword(password)) return;
     register(
       { name, email, password },
       { onSuccess: () => navigate('/login') }
@@ -58,50 +58,50 @@ export function RegisterPage() {
       <Header />
       <main className={styles.main}>
         <div className={styles.card}>
-          <h1 className={styles.title}>회원가입</h1>
+          <h1 className={styles.title}>{t('auth.register_title')}</h1>
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <Input
-              label="이름"
+              label={t('auth.name')}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              onBlur={() => setTouched((t) => ({ ...t, name: true }))}
-              placeholder="이름을 입력하세요"
+              onBlur={() => setTouched((p) => ({ ...p, name: true }))}
+              placeholder={t('auth.name_placeholder')}
               errorMessage={nameError}
               required
             />
             <Input
-              label="이메일"
+              label={t('auth.email')}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-              placeholder="이메일을 입력하세요"
+              onBlur={() => setTouched((p) => ({ ...p, email: true }))}
+              placeholder={t('auth.email_placeholder')}
               errorMessage={emailError}
               required
             />
             <Input
-              label="비밀번호"
+              label={t('auth.password')}
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onBlur={() => setTouched((t) => ({ ...t, password: true }))}
-              placeholder="8~128자, 영문·숫자·특수문자 각 1자 이상"
+              onBlur={() => setTouched((p) => ({ ...p, password: true }))}
+              placeholder={t('auth.password_hint')}
               errorMessage={passwordError}
               required
             />
             {isError && (
               <div className={styles.errorBox} role="alert">
-                {getErrorMessage(error)}
+                {getErrorMessage(error, t('auth.register_error'))}
               </div>
             )}
             <Button type="submit" className={styles.submitBtn} loading={isPending}>
-              회원가입
+              {t('auth.register_btn')}
             </Button>
           </form>
           <p className={styles.footer}>
-            이미 계정이 있으신가요?
+            {t('auth.has_account')}
             <Link to="/login" className={styles.footerLink}>
-              로그인
+              {t('auth.login_link')}
             </Link>
           </p>
         </div>

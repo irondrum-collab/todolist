@@ -1,14 +1,15 @@
 .panel {
-  background: #ffffff;
+  background: var(--color-surface, #ffffff);
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: background 0.2s ease;
 }
 
 .title {
   font-size: 14px;
   font-weight: 600;
-  color: #202124;
+  color: var(--color-text-primary, #202124);
   margin: 0 0 12px;
 }
 
@@ -31,7 +32,7 @@
 .name {
   flex: 1;
   font-size: 14px;
-  color: #202124;
+  color: var(--color-text-primary, #202124);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -40,11 +41,13 @@
 .editInput {
   flex: 1;
   height: 28px;
-  border: 1px solid #1a73e8;
+  border: 1px solid var(--color-accent, #1a73e8);
   border-radius: 4px;
   padding: 0 6px;
   font-size: 14px;
   font-family: inherit;
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-primary, #202124);
   outline: none;
 }
 
@@ -68,17 +71,17 @@
 }
 
 .editBtn {
-  background: #f1f3f4;
-  color: #5f6368;
+  background: var(--color-hover, #f1f3f4);
+  color: var(--color-text-secondary, #5f6368);
 }
 
 .editBtn:hover {
-  background: #e0e0e0;
+  background: var(--color-border, #e0e0e0);
 }
 
 .deleteBtn {
   background: #fce8e6;
-  color: #d93025;
+  color: var(--color-error, #d93025);
 }
 
 .deleteBtn:hover {
@@ -86,7 +89,7 @@
 }
 
 .saveBtn {
-  background: #1a73e8;
+  background: var(--color-accent, #1a73e8);
   color: #ffffff;
 }
 
@@ -100,12 +103,12 @@
 }
 
 .cancelBtn {
-  background: #f1f3f4;
-  color: #5f6368;
+  background: var(--color-hover, #f1f3f4);
+  color: var(--color-text-secondary, #5f6368);
 }
 
 .cancelBtn:hover {
-  background: #e0e0e0;
+  background: var(--color-border, #e0e0e0);
 }
 
 .addForm {
@@ -113,30 +116,31 @@
   gap: 6px;
   margin-top: 8px;
   padding-top: 12px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--color-border, #e0e0e0);
 }
 
 .addInput {
   flex: 1;
   height: 32px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border, #e0e0e0);
   border-radius: 4px;
   padding: 0 8px;
   font-size: 13px;
   font-family: inherit;
-  color: #202124;
+  color: var(--color-text-primary, #202124);
+  background: var(--color-surface, #ffffff);
   min-width: 0;
 }
 
 .addInput:focus {
   outline: none;
-  border-color: #1a73e8;
+  border-color: var(--color-accent, #1a73e8);
 }
 
 .addBtn {
   height: 32px;
   padding: 0 12px;
-  background: #1a73e8;
+  background: var(--color-accent, #1a73e8);
   color: #ffffff;
   border: none;
   border-radius: 4px;

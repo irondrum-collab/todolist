@@ -20,7 +20,7 @@ afterAll(async () => {
 });
 
 describe('POST /api/auth/login', () => {
-  test('정상 로그인 → 200 { token: string, user: { id, email, name } }', async () => {
+  test('정상 로그인 → 200 { token: string, user: { id, email, name, theme, language } }', async () => {
     const res = await request(app)
       .post('/api/auth/login')
       .send({ email: TEST_EMAIL, password: TEST_PASSWORD });
@@ -32,6 +32,8 @@ describe('POST /api/auth/login', () => {
         id: expect.any(Number),
         email: TEST_EMAIL,
         name: TEST_NAME,
+        theme: 'light',
+        language: 'ko',
       },
     });
   });

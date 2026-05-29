@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 const userRepository = require('../repositories/userRepository');
 
-const updateMe = async (userId, { name, currentPassword, newPassword }) => {
+const updateMe = async (userId, { name, currentPassword, newPassword, theme, language }) => {
   // 1. 변경할 내용이 없으면 현재 사용자 정보 그대로 반환
-  if (name === undefined && newPassword === undefined) {
+  if (name === undefined && newPassword === undefined && theme === undefined && language === undefined) {
     const row = await userRepository.findById(userId);
     return {
       id: row.id,
@@ -43,6 +43,8 @@ const updateMe = async (userId, { name, currentPassword, newPassword }) => {
   const fields = {};
   if (name !== undefined) fields.name = name;
   if (hashedPassword !== undefined) fields.password = hashedPassword;
+  if (theme !== undefined) fields.theme = theme;
+  if (language !== undefined) fields.language = language;
 
   const row = await userRepository.updateUser(userId, fields);
 

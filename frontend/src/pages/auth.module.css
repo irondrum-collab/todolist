@@ -1,8 +1,9 @@
 .page {
   min-height: 100vh;
-  background: #f6f8fc;
+  background: var(--color-bg, #f6f8fc);
   display: flex;
   flex-direction: column;
+  transition: background 0.2s ease;
 }
 
 .main {
@@ -14,18 +15,19 @@
 }
 
 .card {
-  background: #ffffff;
+  background: var(--color-surface, #ffffff);
   border-radius: 8px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   padding: 40px;
   width: 100%;
   max-width: 400px;
+  transition: background 0.2s ease;
 }
 
 .title {
   font-size: 20px;
   font-weight: 500;
-  color: #202124;
+  color: var(--color-text-primary, #202124);
   margin: 0 0 24px;
   text-align: center;
 }
@@ -47,7 +49,7 @@
   border-radius: 4px;
   padding: 12px;
   font-size: 14px;
-  color: #d93025;
+  color: var(--color-error, #d93025);
   text-align: center;
 }
 
@@ -55,11 +57,11 @@
   margin-top: 20px;
   text-align: center;
   font-size: 14px;
-  color: #5f6368;
+  color: var(--color-text-secondary, #5f6368);
 }
 
 .footerLink {
-  color: #1a73e8;
+  color: var(--color-accent, #1a73e8);
   text-decoration: none;
   font-weight: 500;
   margin-left: 4px;

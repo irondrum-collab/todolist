@@ -1,8 +1,9 @@
 .page {
   min-height: 100vh;
-  background: #f6f8fc;
+  background: var(--color-bg, #f6f8fc);
   display: flex;
   flex-direction: column;
+  transition: background 0.2s ease;
 }
 
 .main {
@@ -13,26 +14,27 @@
 }
 
 .card {
-  background: #ffffff;
+  background: var(--color-surface, #ffffff);
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   padding: 32px;
   width: 100%;
   max-width: 600px;
   height: fit-content;
+  transition: background 0.2s ease;
 }
 
 .heading {
   font-size: 20px;
   font-weight: 600;
-  color: #202124;
+  color: var(--color-text-primary, #202124);
   margin: 0 0 24px;
 }
 
 .section {
   margin-bottom: 32px;
   padding-bottom: 32px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border, #e0e0e0);
 }
 
 .section:last-child {
@@ -44,7 +46,7 @@
 .sectionTitle {
   font-size: 15px;
   font-weight: 500;
-  color: #1a73e8;
+  color: var(--color-accent, #1a73e8);
   margin: 0 0 16px;
 }
 
@@ -55,7 +57,36 @@
 }
 
 .success {
-  color: #137333;
+  color: var(--color-success, #137333);
   font-size: 14px;
   margin: 8px 0 0;
+}
+
+.error {
+  color: var(--color-error, #c5221f);
+  font-size: 14px;
+  margin: 8px 0 0;
+}
+
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+
+.legend {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #202124);
+  margin-bottom: 12px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text-primary, #202124);
+  margin-bottom: 8px;
+  cursor: pointer;
 }

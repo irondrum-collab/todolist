@@ -96,4 +96,34 @@ describe('userService.updateMe', () => {
       createdAt: '2026-05-28T00:00:00.000Z',
     });
   });
+
+  test('theme만 변경: updateUser({ theme: "dark" }) 호출', async () => {
+    const updatedRow = { ...mockRow, theme: 'dark' };
+    userRepository.updateUser.mockResolvedValue(updatedRow);
+
+    const result = await updateMe(1, { theme: 'dark' });
+
+    expect(userRepository.updateUser).toHaveBeenCalledWith(1, { theme: 'dark' });
+    expect(result).toMatchObject({ theme: 'dark', language: 'ko' });
+  });
+
+  test('language만 변경: updateUser({ language: "en" }) 호출', async () => {
+    const updatedRow = { ...mockRow, language: 'en' };
+    userRepository.updateUser.mockResolvedValue(updatedRow);
+
+    const result = await updateMe(1, { language: 'en' });
+
+    expect(userRepository.updateUser).toHaveBeenCalledWith(1, { language: 'en' });
+    expect(result).toMatchObject({ theme: 'light', language: 'en' });
+  });
+
+  test('theme과 name 동시 변경: fields에 둘 다 포함', async () => {
+    const updatedRow = { ...mockRow, name: '새이름', theme: 'dark' };
+    userRepository.updateUser.mockResolvedValue(updatedRow);
+
+    const result = await updateMe(1, { name: '새이름', theme: 'dark' });
+
+    expect(userRepository.updateUser).toHaveBeenCalledWith(1, { name: '새이름', theme: 'dark' });
+    expect(result).toMatchObject({ name: '새이름', theme: 'dark' });
+  });
 });

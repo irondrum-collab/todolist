@@ -10,19 +10,20 @@
 }
 
 .dialog {
-  background: #ffffff;
+  background: var(--color-surface, #ffffff);
   border-radius: 8px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   padding: 24px;
   max-width: 480px;
   width: 100%;
   animation: scaleIn 0.15s ease;
+  transition: background 0.2s ease;
 }
 
 .title {
   font-size: 16px;
   font-weight: 500;
-  color: #202124;
+  color: var(--color-text-primary, #202124);
   margin: 0 0 16px;
 }
 

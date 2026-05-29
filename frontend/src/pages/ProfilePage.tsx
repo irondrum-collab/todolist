@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/authStore';
 import { useUpdateMe } from '../hooks/useAuth';
 import { Header } from '../components/layout/Header';
@@ -8,8 +9,13 @@ import { Button } from '../components/common/Button';
 import styles from './ProfilePage.module.css';
 
 export function ProfilePage() {
+  const { t } = useTranslation();
   const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
+  const theme = useAuthStore((s) => s.theme);
+  const setTheme = useAuthStore((s) => s.setTheme);
+  const language = useAuthStore((s) => s.language);
+  const setLanguage = useAuthStore((s) => s.setLanguage);
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -22,8 +28,12 @@ export function ProfilePage() {
   const [confirmError, setConfirmError] = useState('');
   const [passwordSuccess, setPasswordSuccess] = useState('');
 
+  const [settingsSuccess, setSettingsSuccess] = useState('');
+  const [settingsError, setSettingsError] = useState('');
+
   const { mutate: updateName, isPending: isNamePending } = useUpdateMe();
   const { mutate: updatePassword, isPending: isPasswordPending } = useUpdateMe();
+  const { mutate: updateSettings, isPending: isSettingsPending } = useUpdateMe();
 
   useEffect(() => {
     if (!token) navigate('/login');
@@ -42,7 +52,7 @@ export function ProfilePage() {
       { name: name.trim() },
       {
         onSuccess: () => {
-          setNameSuccess('이름이 저장되었습니다.');
+          setNameSuccess(t('profile.name_saved'));
           setTimeout(() => setNameSuccess(''), 3000);
         },
       }
@@ -55,7 +65,7 @@ export function ProfilePage() {
     setConfirmError('');
 
     if (newPassword !== confirmPassword) {
-      setConfirmError('새 비밀번호가 일치하지 않습니다');
+      setConfirmError(t('profile.password_mismatch'));
       return;
     }
 
@@ -66,16 +76,33 @@ export function ProfilePage() {
           setCurrentPassword('');
           setNewPassword('');
           setConfirmPassword('');
-          setPasswordSuccess('비밀번호가 변경되었습니다.');
+          setPasswordSuccess(t('profile.password_changed'));
           setTimeout(() => setPasswordSuccess(''), 3000);
         },
         onError: (error: unknown) => {
           const msg = (error as { response?: { data?: { message?: string } } })?.response?.data?.message;
           if (msg?.includes('현재 비밀번호')) {
-            setPasswordError('현재 비밀번호가 올바르지 않습니다');
+            setPasswordError(t('profile.current_password_wrong'));
           } else {
-            setPasswordError('비밀번호 변경에 실패했습니다');
+            setPasswordError(t('profile.password_change_failed'));
           }
+        },
+      }
+    );
+  };
+
+  const handleDisplaySave = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateSettings(
+      { theme, language },
+      {
+        onSuccess: () => {
+          setSettingsSuccess(t('profile.settings_saved'));
+          setTimeout(() => setSettingsSuccess(''), 3000);
+        },
+        onError: () => {
+          setSettingsError(t('profile.settings_save_failed'));
+          setTimeout(() => setSettingsError(''), 3000);
         },
       }
     );
@@ -86,13 +113,13 @@ export function ProfilePage() {
       <Header />
       <main className={styles.main}>
         <div className={styles.card}>
-          <h1 className={styles.heading}>내 정보 수정</h1>
+          <h1 className={styles.heading}>{t('profile.title')}</h1>
 
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>이름 변경</h2>
+            <h2 className={styles.sectionTitle}>{t('profile.name_section')}</h2>
             <form onSubmit={handleNameSave} noValidate>
               <Input
-                label="이름"
+                label={t('profile.name_label')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={50}
@@ -103,17 +130,17 @@ export function ProfilePage() {
               )}
               <div className={styles.actions}>
                 <Button type="submit" loading={isNamePending} disabled={!name.trim()}>
-                  이름 저장
+                  {t('profile.save_name')}
                 </Button>
               </div>
             </form>
           </section>
 
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
+            <h2 className={styles.sectionTitle}>{t('profile.password_section')}</h2>
             <form onSubmit={handlePasswordChange} noValidate>
               <Input
-                label="현재 비밀번호"
+                label={t('profile.current_password')}
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
@@ -121,7 +148,7 @@ export function ProfilePage() {
                 required
               />
               <Input
-                label="새 비밀번호"
+                label={t('profile.new_password')}
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -130,7 +157,7 @@ export function ProfilePage() {
                 required
               />
               <Input
-                label="새 비밀번호 확인"
+                label={t('profile.confirm_password')}
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -142,7 +169,70 @@ export function ProfilePage() {
               )}
               <div className={styles.actions}>
                 <Button type="submit" loading={isPasswordPending}>
-                  비밀번호 변경
+                  {t('profile.change_password_btn')}
+                </Button>
+              </div>
+            </form>
+          </section>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{t('profile.display_section')}</h2>
+            <form onSubmit={handleDisplaySave} noValidate>
+              <fieldset className={styles.fieldset}>
+                <legend className={styles.legend}>{t('profile.theme_label')}</legend>
+                <label className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="theme"
+                    value="light"
+                    checked={theme === 'light'}
+                    onChange={() => setTheme('light')}
+                  />
+                  {t('profile.theme_light')}
+                </label>
+                <label className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="theme"
+                    value="dark"
+                    checked={theme === 'dark'}
+                    onChange={() => setTheme('dark')}
+                  />
+                  {t('profile.theme_dark')}
+                </label>
+              </fieldset>
+              <fieldset className={styles.fieldset}>
+                <legend className={styles.legend}>{t('profile.language_label')}</legend>
+                <label className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="language"
+                    value="ko"
+                    checked={language === 'ko'}
+                    onChange={() => setLanguage('ko')}
+                  />
+                  {t('profile.language_ko')}
+                </label>
+                <label className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="language"
+                    value="en"
+                    checked={language === 'en'}
+                    onChange={() => setLanguage('en')}
+                  />
+                  {t('profile.language_en')}
+                </label>
+              </fieldset>
+              {settingsSuccess && (
+                <p className={styles.success} role="status">{settingsSuccess}</p>
+              )}
+              {settingsError && (
+                <p className={styles.error} role="alert">{settingsError}</p>
+              )}
+              <div className={styles.actions}>
+                <Button type="submit" loading={isSettingsPending}>
+                  {t('profile.save_settings')}
                 </Button>
               </div>
             </form>

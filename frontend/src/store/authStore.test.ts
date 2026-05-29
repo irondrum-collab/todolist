@@ -1,6 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useAuthStore } from './authStore';
 import type { User } from '../types/user';
+
+vi.mock('../i18n', () => ({
+  default: {
+    changeLanguage: vi.fn(),
+  },
+}));
+
+import i18n from '../i18n';
 
 const mockUser: User = {
   id: 1,
@@ -13,7 +21,9 @@ const mockUser: User = {
 
 beforeEach(() => {
   localStorage.clear();
-  useAuthStore.setState({ token: null, user: null });
+  document.documentElement.removeAttribute('data-theme');
+  useAuthStore.setState({ token: null, user: null, theme: 'light', language: 'ko' });
+  vi.clearAllMocks();
 });
 
 describe('authStore 초기 상태', () => {
@@ -24,11 +34,30 @@ describe('authStore 초기 상태', () => {
 
   it('localStorage에 token이 있으면 token을 초기값으로 사용한다', () => {
     localStorage.setItem('token', 'saved-token');
-    // 스토어를 재초기화하여 localStorage 값을 반영
     useAuthStore.setState({ token: localStorage.getItem('token') });
 
     const { token } = useAuthStore.getState();
     expect(token).toBe('saved-token');
+  });
+
+  it('초기 theme은 light이다', () => {
+    expect(useAuthStore.getState().theme).toBe('light');
+  });
+
+  it('초기 language는 ko이다', () => {
+    expect(useAuthStore.getState().language).toBe('ko');
+  });
+
+  it('localStorage에 theme=dark가 있으면 dark로 초기화한다', () => {
+    localStorage.setItem('theme', 'dark');
+    useAuthStore.setState({ theme: 'dark' });
+    expect(useAuthStore.getState().theme).toBe('dark');
+  });
+
+  it('localStorage에 language=en이 있으면 en으로 초기화한다', () => {
+    localStorage.setItem('language', 'en');
+    useAuthStore.setState({ language: 'en' });
+    expect(useAuthStore.getState().language).toBe('en');
   });
 });
 
@@ -45,6 +74,48 @@ describe('setAuth', () => {
     useAuthStore.getState().setAuth('new-token', mockUser);
 
     expect(localStorage.getItem('token')).toBe('new-token');
+  });
+
+  it('로그인 후 서버 theme 값으로 state를 덮어쓴다', () => {
+    const darkUser = { ...mockUser, theme: 'dark' as const };
+    useAuthStore.getState().setAuth('token', darkUser);
+
+    expect(useAuthStore.getState().theme).toBe('dark');
+  });
+
+  it('로그인 후 서버 language 값으로 state를 덮어쓴다', () => {
+    const enUser = { ...mockUser, language: 'en' as const };
+    useAuthStore.getState().setAuth('token', enUser);
+
+    expect(useAuthStore.getState().language).toBe('en');
+  });
+
+  it('로그인 후 서버 theme이 localStorage에 저장된다', () => {
+    const darkUser = { ...mockUser, theme: 'dark' as const };
+    useAuthStore.getState().setAuth('token', darkUser);
+
+    expect(localStorage.getItem('theme')).toBe('dark');
+  });
+
+  it('로그인 후 서버 language가 localStorage에 저장된다', () => {
+    const enUser = { ...mockUser, language: 'en' as const };
+    useAuthStore.getState().setAuth('token', enUser);
+
+    expect(localStorage.getItem('language')).toBe('en');
+  });
+
+  it('로그인 후 서버 theme이 document에 적용된다', () => {
+    const darkUser = { ...mockUser, theme: 'dark' as const };
+    useAuthStore.getState().setAuth('token', darkUser);
+
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  });
+
+  it('로그인 후 서버 language로 i18n.changeLanguage가 호출된다', () => {
+    const enUser = { ...mockUser, language: 'en' as const };
+    useAuthStore.getState().setAuth('token', enUser);
+
+    expect(vi.mocked(i18n.changeLanguage)).toHaveBeenCalledWith('en');
   });
 });
 
@@ -63,5 +134,66 @@ describe('clearAuth', () => {
     useAuthStore.getState().clearAuth();
 
     expect(localStorage.getItem('token')).toBeNull();
+  });
+});
+
+describe('setTheme', () => {
+  it('state의 theme이 업데이트된다', () => {
+    useAuthStore.getState().setTheme('dark');
+    expect(useAuthStore.getState().theme).toBe('dark');
+  });
+
+  it('미로그인 상태 테마 변경 → localStorage에 저장된다', () => {
+    useAuthStore.getState().setTheme('dark');
+    expect(localStorage.getItem('theme')).toBe('dark');
+  });
+
+  it('setTheme("dark") 호출 시 document.documentElement에 data-theme="dark" 적용', () => {
+    useAuthStore.getState().setTheme('dark');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  });
+
+  it('setTheme("light") 호출 시 document.documentElement에 data-theme="light" 적용', () => {
+    useAuthStore.getState().setTheme('dark');
+    useAuthStore.getState().setTheme('light');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+  });
+
+  it('dark → light 전환 시 state와 localStorage 모두 업데이트된다', () => {
+    useAuthStore.getState().setTheme('dark');
+    useAuthStore.getState().setTheme('light');
+
+    expect(useAuthStore.getState().theme).toBe('light');
+    expect(localStorage.getItem('theme')).toBe('light');
+  });
+});
+
+describe('setLanguage', () => {
+  it('state의 language가 업데이트된다', () => {
+    useAuthStore.getState().setLanguage('en');
+    expect(useAuthStore.getState().language).toBe('en');
+  });
+
+  it('미로그인 상태 언어 변경 → localStorage에 저장된다', () => {
+    useAuthStore.getState().setLanguage('en');
+    expect(localStorage.getItem('language')).toBe('en');
+  });
+
+  it('setLanguage("en") 호출 시 i18n.changeLanguage("en")이 호출된다', () => {
+    useAuthStore.getState().setLanguage('en');
+    expect(vi.mocked(i18n.changeLanguage)).toHaveBeenCalledWith('en');
+  });
+
+  it('setLanguage("ko") 호출 시 i18n.changeLanguage("ko")이 호출된다', () => {
+    useAuthStore.getState().setLanguage('ko');
+    expect(vi.mocked(i18n.changeLanguage)).toHaveBeenCalledWith('ko');
+  });
+
+  it('en → ko 전환 시 state와 localStorage 모두 업데이트된다', () => {
+    useAuthStore.getState().setLanguage('en');
+    useAuthStore.getState().setLanguage('ko');
+
+    expect(useAuthStore.getState().language).toBe('ko');
+    expect(localStorage.getItem('language')).toBe('ko');
   });
 });

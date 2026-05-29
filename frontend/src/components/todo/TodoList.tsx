@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Category, TodoFilters, TodoStatus } from '../../types/todo';
 import { useTodos } from '../../hooks/useTodos';
 import { TodoItem } from './TodoItem';
@@ -11,12 +12,13 @@ interface TodoListProps {
 }
 
 export function TodoList({ filters, categories, onEdit }: TodoListProps) {
+  const { t } = useTranslation();
   const { data: todos = [], isLoading, isError } = useTodos(filters);
 
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <div className={styles.empty}>불러오는 중...</div>
+        <div className={styles.empty}>{t('todo.loading')}</div>
       </div>
     );
   }
@@ -24,16 +26,16 @@ export function TodoList({ filters, categories, onEdit }: TodoListProps) {
   if (isError) {
     return (
       <div className={styles.container}>
-        <div className={styles.empty}>데이터를 불러올 수 없습니다.</div>
+        <div className={styles.empty}>{t('todo.load_error')}</div>
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>할 일 목록 ({todos.length}건)</div>
+      <div className={styles.header}>{t('todo.list_count', { count: todos.length })}</div>
       {todos.length === 0 ? (
-        <div className={styles.empty}>등록된 할 일이 없습니다</div>
+        <div className={styles.empty}>{t('todo.empty')}</div>
       ) : (
         todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} categories={categories} onEdit={onEdit} />

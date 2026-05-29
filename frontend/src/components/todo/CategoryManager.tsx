@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Category } from '../../types/todo';
 import { useCreateCategory, useUpdateCategory, useDeleteCategory } from '../../hooks/useCategoryMutations';
 import { Modal } from '../common/Modal';
@@ -9,6 +10,7 @@ interface CategoryManagerProps {
 }
 
 export function CategoryManager({ categories }: CategoryManagerProps) {
+  const { t } = useTranslation();
   const [newName, setNewName] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingName, setEditingName] = useState('');
@@ -46,7 +48,7 @@ export function CategoryManager({ categories }: CategoryManagerProps) {
 
   return (
     <div className={styles.panel}>
-      <h2 className={styles.title}>카테고리 관리</h2>
+      <h2 className={styles.title}>{t('category.title')}</h2>
 
       <ul className={styles.list}>
         {categories.map((cat) => (
@@ -75,13 +77,13 @@ export function CategoryManager({ categories }: CategoryManagerProps) {
                     onClick={() => handleEditSave(cat.id)}
                     disabled={isUpdating || !editingName.trim()}
                   >
-                    저장
+                    {t('category.save_btn')}
                   </button>
                   <button
                     className={styles.cancelBtn}
                     onClick={() => setEditingId(null)}
                   >
-                    취소
+                    {t('category.cancel_btn')}
                   </button>
                 </>
               ) : (
@@ -90,14 +92,14 @@ export function CategoryManager({ categories }: CategoryManagerProps) {
                     <button
                       className={styles.editBtn}
                       onClick={() => handleEditStart(cat)}
-                      aria-label={`${cat.name} 수정`}
+                      aria-label={`${cat.name} ${t('common.edit')}`}
                     >
                       ✎
                     </button>
                     <button
                       className={styles.deleteBtn}
                       onClick={() => setDeletingId(cat.id)}
-                      aria-label={`${cat.name} 삭제`}
+                      aria-label={`${cat.name} ${t('common.delete')}`}
                     >
                       ✕
                     </button>
@@ -114,7 +116,7 @@ export function CategoryManager({ categories }: CategoryManagerProps) {
           className={styles.addInput}
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
-          placeholder="새 카테고리 이름"
+          placeholder={t('category.new_placeholder')}
           maxLength={30}
         />
         <button
@@ -122,19 +124,19 @@ export function CategoryManager({ categories }: CategoryManagerProps) {
           className={styles.addBtn}
           disabled={isCreating || !newName.trim()}
         >
-          추가
+          {t('category.add_btn')}
         </button>
       </form>
 
       <Modal
         isOpen={!!deletingId}
         onClose={() => setDeletingId(null)}
-        title="카테고리 삭제"
-        confirmLabel={isDeleting ? '삭제 중...' : '삭제'}
+        title={t('category.delete_title')}
+        confirmLabel={isDeleting ? t('category.deleting') : t('common.delete')}
         onConfirm={handleDeleteConfirm}
         confirmVariant="danger"
       >
-        <p>"{deletingCategory?.name}" 카테고리를 삭제하시겠습니까?</p>
+        <p>{t('category.delete_msg', { name: deletingCategory?.name })}</p>
       </Modal>
     </div>
   );

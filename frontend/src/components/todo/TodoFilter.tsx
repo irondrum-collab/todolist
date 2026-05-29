@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import type { Category, TodoFilters, TodoStatus } from '../../types/todo';
 import styles from './TodoFilter.module.css';
 
-const STATUS_OPTIONS: Array<TodoStatus | '전체'> = [
+const STATUS_VALUES: Array<TodoStatus | '전체'> = [
   '전체', '시작 전', '진행 중', '완료', '기한 초과', '진행 중 (날짜 없음)',
 ];
 
@@ -12,11 +13,22 @@ interface TodoFilterProps {
 }
 
 export function TodoFilter({ filters, categories, onChange }: TodoFilterProps) {
+  const { t } = useTranslation();
+
+  const statusLabel: Record<string, string> = {
+    '전체': t('filter.all'),
+    '시작 전': t('status.not_started'),
+    '진행 중': t('status.in_progress'),
+    '완료': t('status.completed'),
+    '기한 초과': t('status.overdue'),
+    '진행 중 (날짜 없음)': t('status.no_date'),
+  };
+
   return (
     <div className={styles.panel}>
-      <h2 className={styles.title}>필터</h2>
+      <h2 className={styles.title}>{t('filter.title')}</h2>
       <div className={styles.group}>
-        <label className={styles.label} htmlFor="filter-category">카테고리</label>
+        <label className={styles.label} htmlFor="filter-category">{t('filter.category')}</label>
         <select
           id="filter-category"
           className={styles.select}
@@ -25,14 +37,14 @@ export function TodoFilter({ filters, categories, onChange }: TodoFilterProps) {
             onChange({ ...filters, categoryId: e.target.value ? Number(e.target.value) : undefined })
           }
         >
-          <option value="">전체</option>
+          <option value="">{t('filter.all')}</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
       </div>
       <div className={styles.group}>
-        <label className={styles.label} htmlFor="filter-status">상태</label>
+        <label className={styles.label} htmlFor="filter-status">{t('filter.status')}</label>
         <select
           id="filter-status"
           className={styles.select}
@@ -41,8 +53,8 @@ export function TodoFilter({ filters, categories, onChange }: TodoFilterProps) {
             onChange({ ...filters, status: e.target.value as TodoStatus | '전체' })
           }
         >
-          {STATUS_OPTIONS.map((s) => (
-            <option key={s} value={s}>{s}</option>
+          {STATUS_VALUES.map((s) => (
+            <option key={s} value={s}>{statusLabel[s]}</option>
           ))}
         </select>
       </div>

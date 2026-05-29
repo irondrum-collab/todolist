@@ -33,7 +33,7 @@ const login = async (email, password) => {
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );
 
-  return { token, user: { id: user.id, email: user.email, name: user.name } };
+  return { token, user: { id: user.id, email: user.email, name: user.name, theme: user.theme, language: user.language } };
 };
 
 module.exports = { register, login };

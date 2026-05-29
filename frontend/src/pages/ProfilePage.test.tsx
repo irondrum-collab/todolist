@@ -17,6 +17,8 @@ vi.mock('react-router-dom', async () => {
   return { ...actual, useNavigate: () => mockNavigate };
 });
 
+vi.mock('../i18n', () => ({ default: { changeLanguage: vi.fn() } }));
+
 import { updateMe } from '../api/userApi';
 
 const mockUser = {
@@ -39,7 +41,7 @@ function renderPage() {
 
 beforeEach(() => {
   localStorage.clear();
-  useAuthStore.setState({ token: 'jwt-token', user: mockUser });
+  useAuthStore.setState({ token: 'jwt-token', user: mockUser, theme: 'light', language: 'ko' });
   mockNavigate.mockClear();
   vi.clearAllMocks();
 });
@@ -57,7 +59,7 @@ describe('ProfilePage', () => {
   });
 
   it('미인증 시 /login으로 리다이렉트한다', () => {
-    useAuthStore.setState({ token: null, user: null });
+    useAuthStore.setState({ token: null, user: null, theme: 'light', language: 'ko' });
     renderPage();
     expect(mockNavigate).toHaveBeenCalledWith('/login');
   });
@@ -143,5 +145,93 @@ describe('ProfilePage', () => {
     const nameInput = screen.getByLabelText('이름');
     await userEvent.clear(nameInput);
     expect(screen.getByRole('button', { name: '이름 저장' })).toBeDisabled();
+  });
+});
+
+describe('ProfilePage — 화면 설정(테마)', () => {
+  it('화면 설정 섹션을 렌더링한다', () => {
+    renderPage();
+    expect(screen.getByRole('heading', { name: '화면 설정', level: 2 })).toBeInTheDocument();
+  });
+
+  it('라이트 모드 라디오 버튼이 초기 선택 상태이다', () => {
+    renderPage();
+    expect(screen.getByRole('radio', { name: '라이트 모드' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: '다크 모드' })).not.toBeChecked();
+  });
+
+  it('다크 모드 라디오 선택 시 theme state가 dark로 변경된다', async () => {
+    renderPage();
+    await userEvent.click(screen.getByRole('radio', { name: '다크 모드' }));
+    expect(useAuthStore.getState().theme).toBe('dark');
+  });
+
+  it('다크 모드가 이미 선택된 경우 다크 모드 라디오가 체크된다', () => {
+    useAuthStore.setState({ token: 'jwt-token', user: mockUser, theme: 'dark', language: 'ko' });
+    renderPage();
+    expect(screen.getByRole('radio', { name: '다크 모드' })).toBeChecked();
+  });
+
+  it('설정 저장 클릭 시 updateMe({ theme, language }) 를 호출한다', async () => {
+    vi.mocked(updateMe).mockResolvedValueOnce(mockUser);
+    renderPage();
+    await userEvent.click(screen.getByRole('button', { name: '설정 저장' }));
+    await waitFor(() =>
+      expect(updateMe).toHaveBeenCalledWith(expect.objectContaining({ theme: 'light', language: 'ko' }))
+    );
+  });
+
+  it('설정 저장 성공 시 성공 메시지를 표시한다', async () => {
+    vi.mocked(updateMe).mockResolvedValueOnce(mockUser);
+    renderPage();
+    await userEvent.click(screen.getByRole('button', { name: '설정 저장' }));
+    await waitFor(() =>
+      expect(screen.getByText('설정이 저장되었습니다.')).toBeInTheDocument()
+    );
+  });
+
+  it('설정 저장 실패 시 에러 메시지를 표시한다', async () => {
+    vi.mocked(updateMe).mockRejectedValueOnce(new Error('서버 오류'));
+    renderPage();
+    await userEvent.click(screen.getByRole('button', { name: '설정 저장' }));
+    await waitFor(() =>
+      expect(screen.getByText('설정 저장에 실패했습니다.')).toBeInTheDocument()
+    );
+  });
+});
+
+describe('ProfilePage — 화면 설정(언어)', () => {
+  it('한국어와 English 라디오 버튼을 표시한다', () => {
+    renderPage();
+    expect(screen.getByRole('radio', { name: '한국어' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'English' })).toBeInTheDocument();
+  });
+
+  it('초기 언어가 ko이면 한국어 라디오가 선택 상태이다', () => {
+    renderPage();
+    expect(screen.getByRole('radio', { name: '한국어' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'English' })).not.toBeChecked();
+  });
+
+  it('언어가 en이면 English 라디오가 선택 상태이다', () => {
+    useAuthStore.setState({ token: 'jwt-token', user: mockUser, theme: 'light', language: 'en' });
+    renderPage();
+    expect(screen.getByRole('radio', { name: 'English' })).toBeChecked();
+  });
+
+  it('English 라디오 선택 시 language state가 en으로 변경된다', async () => {
+    renderPage();
+    await userEvent.click(screen.getByRole('radio', { name: 'English' }));
+    expect(useAuthStore.getState().language).toBe('en');
+  });
+
+  it('설정 저장 클릭 시 updateMe에 language가 포함된다', async () => {
+    useAuthStore.setState({ token: 'jwt-token', user: mockUser, theme: 'light', language: 'en' });
+    vi.mocked(updateMe).mockResolvedValueOnce(mockUser);
+    renderPage();
+    await userEvent.click(screen.getByRole('button', { name: '설정 저장' }));
+    await waitFor(() =>
+      expect(updateMe).toHaveBeenCalledWith(expect.objectContaining({ language: 'en' }))
+    );
   });
 });

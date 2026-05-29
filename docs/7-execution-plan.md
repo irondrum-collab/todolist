@@ -687,14 +687,14 @@
 **목표**: users 테이블에 `theme`, `language` 컬럼 추가 (이미 schema.sql에 포함되어 있으므로 마이그레이션 파일만 별도 작성)
 
 **작업 항목**
-- [ ] `backend/src/db/migrations/004_add_theme_language_to_users.sql` 작성
+- [x] `backend/src/db/migrations/004_add_theme_language_to_users.sql` 작성
   - `ALTER TABLE users ADD COLUMN IF NOT EXISTS theme VARCHAR(10) NOT NULL DEFAULT 'light' CHECK (theme IN ('light', 'dark'));`
   - `ALTER TABLE users ADD COLUMN IF NOT EXISTS language VARCHAR(10) NOT NULL DEFAULT 'ko' CHECK (language IN ('ko', 'en'));`
-- [ ] 마이그레이션 실행 및 컬럼 추가 확인
+- [x] 마이그레이션 실행 및 컬럼 추가 확인
 
 **완료 조건**
-- [ ] 기존 users 레코드에 `theme='light'`, `language='ko'` 기본값 적용 확인
-- [ ] `theme = 'invalid'` 입력 시 CHECK 제약 오류 발생 확인
+- [x] 기존 users 레코드에 `theme='light'`, `language='ko'` 기본값 적용 확인
+- [x] `theme = 'invalid'` 입력 시 CHECK 제약 오류 발생 확인
 
 **의존성**: DB-03, FE-13
 
@@ -709,19 +709,19 @@
 **목표**: `PUT /api/users/me`에 `theme`, `language` 필드 추가
 
 **작업 항목**
-- [ ] `src/repositories/userRepository.js` — `updateUser()` 수정
+- [x] `src/repositories/userRepository.js` — `updateUser()` 수정
   - `theme`, `language` 필드 수정 지원
-- [ ] `src/services/userService.js` — `theme`, `language` 유효성 검사 추가
+- [x] `src/services/userService.js` — `theme`, `language` 유효성 검사 추가
   - theme: `'light'` | `'dark'` 외 값 → 400
   - language: `'ko'` | `'en'` 외 값 → 400, 지원하지 않는 코드는 `'ko'` 적용 (UC-09 예외 처리)
-- [ ] `src/controllers/userController.js` — body에서 `theme`, `language` 파싱 추가
-- [ ] 로그인 API 응답에 `theme`, `language` 포함 확인 (프론트엔드 자동 복원용)
+- [x] `src/controllers/userController.js` — body에서 `theme`, `language` 파싱 추가
+- [x] 로그인 API 응답에 `theme`, `language` 포함 확인 (프론트엔드 자동 복원용)
 
 **완료 조건**
-- [ ] `PUT /api/users/me { theme: 'dark' }` → DB 반영 확인
-- [ ] `PUT /api/users/me { language: 'en' }` → DB 반영 확인
-- [ ] `POST /api/auth/login` 응답에 `user.theme`, `user.language` 포함 확인
-- [ ] 유효하지 않은 값 요청 → `400` 응답
+- [x] `PUT /api/users/me { theme: 'dark' }` → DB 반영 확인
+- [x] `PUT /api/users/me { language: 'en' }` → DB 반영 확인
+- [x] `POST /api/auth/login` 응답에 `user.theme`, `user.language` 포함 확인
+- [x] 유효하지 않은 값 요청 → `400` 응답
 
 **의존성**: BE-07, DB-04
 
@@ -736,15 +736,15 @@
 **목표**: 다국어(ko/en) 지원 기반 구성
 
 **작업 항목**
-- [ ] i18n 라이브러리 설치 (예: `react-i18next` + `i18next`)
-- [ ] `src/locales/ko.json` 작성: 전체 UI 텍스트 한국어 키-값
-- [ ] `src/locales/en.json` 작성: 전체 UI 텍스트 영어 키-값
-- [ ] i18n 초기화 설정: 기본 언어 `ko`, 리소스 로드
-- [ ] `src/main.tsx`에 i18n 초기화 import
+- [x] i18n 라이브러리 설치 (예: `react-i18next` + `i18next`)
+- [x] `src/locales/ko.json` 작성: 전체 UI 텍스트 한국어 키-값
+- [x] `src/locales/en.json` 작성: 전체 UI 텍스트 영어 키-값
+- [x] i18n 초기화 설정: 기본 언어 `ko`, 리소스 로드
+- [x] `src/main.tsx`에 i18n 초기화 import
 
 **완료 조건**
-- [ ] `useTranslation()` 훅으로 한국어·영어 텍스트 전환 확인
-- [ ] 지원하지 않는 언어 코드 → 기본값 `ko` 적용 확인
+- [x] `useTranslation()` 훅으로 한국어·영어 텍스트 전환 확인
+- [x] 지원하지 않는 언어 코드 → 기본값 `ko` 적용 확인
 
 **의존성**: FE-01
 
@@ -755,18 +755,18 @@
 **목표**: 인증 스토어에 테마·언어 전역 상태 추가
 
 **작업 항목**
-- [ ] `src/store/authStore.ts` 확장
+- [x] `src/store/authStore.ts` 확장
   - state 추가: `theme: 'light' | 'dark'`, `language: 'ko' | 'en'`
   - actions 추가: `setTheme(theme)`, `setLanguage(language)`
   - 미로그인 시: `localStorage`에서 theme·language 초기화 (DR-USER-03)
   - 로그인 후: 서버 값(`user.theme`, `user.language`)으로 덮어쓰기 (DR-USER-03)
-- [ ] `setTheme()` 호출 시 `document.documentElement`에 `data-theme` 속성 적용 (CSS 테마 전환)
-- [ ] `setLanguage()` 호출 시 `i18n.changeLanguage()` 연동
+- [x] `setTheme()` 호출 시 `document.documentElement`에 `data-theme` 속성 적용 (CSS 테마 전환)
+- [x] `setLanguage()` 호출 시 `i18n.changeLanguage()` 연동
 
 **완료 조건**
-- [ ] 미로그인 상태 테마 변경 → localStorage 저장 확인
-- [ ] 로그인 후 서버 theme 값으로 덮어쓰기 확인
-- [ ] `setTheme('dark')` 호출 시 `document.documentElement.dataset.theme = 'dark'` 적용 확인
+- [x] 미로그인 상태 테마 변경 → localStorage 저장 확인
+- [x] 로그인 후 서버 theme 값으로 덮어쓰기 확인
+- [x] `setTheme('dark')` 호출 시 `document.documentElement.dataset.theme = 'dark'` 적용 확인
 
 **의존성**: FE-05, FE-14, BE-10
 
@@ -777,18 +777,18 @@
 **목표**: Dark / Light 테마 전환 UI 및 DB 저장 연동
 
 **작업 항목**
-- [ ] `Header.tsx`에 테마 토글 버튼 추가
-- [ ] 토글 클릭 시 `authStore.setTheme()` 호출 → 즉시 전체 UI 적용
-- [ ] 로그인 상태: `userApi.updateMe({ theme })` 호출로 DB 저장
-- [ ] DB 저장 실패 시: UI 적용은 유지, 토스트 알림 표시
-- [ ] CSS: `data-theme` 속성 기반 Dark/Light 스타일 변수 정의
-- [ ] `ProfilePage.tsx`에도 테마 선택 UI 추가 (UC-03 확장)
+- [x] `Header.tsx`에 테마 토글 버튼 추가
+- [x] 토글 클릭 시 `authStore.setTheme()` 호출 → 즉시 전체 UI 적용
+- [x] 로그인 상태: `userApi.updateMe({ theme })` 호출로 DB 저장
+- [x] DB 저장 실패 시: UI 적용은 유지, 토스트 알림 표시
+- [x] CSS: `data-theme` 속성 기반 Dark/Light 스타일 변수 정의
+- [x] `ProfilePage.tsx`에도 테마 선택 UI 추가 (UC-03 확장)
 
 **완료 조건**
-- [ ] 테마 토글 클릭 즉시 전체 UI 색상 전환 확인
-- [ ] 로그인 후 테마 변경 → DB 저장 → 재로그인 시 해당 테마로 자동 복원 확인
-- [ ] 미로그인 상태 테마 변경 → localStorage 저장 → 로그인 후 DB 값으로 덮어쓰기 확인
-- [ ] DB 저장 실패 시 토스트 알림 표시 확인
+- [x] 테마 토글 클릭 즉시 전체 UI 색상 전환 확인
+- [x] 로그인 후 테마 변경 → DB 저장 → 재로그인 시 해당 테마로 자동 복원 확인
+- [x] 미로그인 상태 테마 변경 → localStorage 저장 → 로그인 후 DB 값으로 덮어쓰기 확인
+- [x] DB 저장 실패 시 토스트 알림 표시 확인
 
 **의존성**: FE-15, BE-10
 
@@ -799,16 +799,16 @@
 **목표**: 한국어 / 영어 전환 UI 및 DB 저장 연동
 
 **작업 항목**
-- [ ] `Header.tsx`에 언어 선택 버튼(ko/en) 추가
-- [ ] 언어 선택 시 `authStore.setLanguage()` 호출 → `i18n.changeLanguage()` 즉시 UI 전환
-- [ ] 로그인 상태: `userApi.updateMe({ language })` 호출로 DB 저장
-- [ ] DB 저장 실패 시: UI 적용은 유지, 토스트 알림 표시
-- [ ] `ProfilePage.tsx`에도 언어 선택 UI 추가 (UC-03 확장)
+- [x] `Header.tsx`에 언어 선택 버튼(ko/en) 추가
+- [x] 언어 선택 시 `authStore.setLanguage()` 호출 → `i18n.changeLanguage()` 즉시 UI 전환
+- [x] 로그인 상태: `userApi.updateMe({ language })` 호출로 DB 저장
+- [x] DB 저장 실패 시: UI 적용은 유지, 토스트 알림 표시
+- [x] `ProfilePage.tsx`에도 언어 선택 UI 추가 (UC-03 확장)
 
 **완료 조건**
-- [ ] 언어 전환 클릭 즉시 전체 UI 텍스트 언어 변경 확인
-- [ ] 로그인 후 언어 변경 → DB 저장 → 재로그인 시 해당 언어로 자동 복원 확인
-- [ ] 미로그인 상태 언어 변경 → localStorage 저장 확인
+- [x] 언어 전환 클릭 즉시 전체 UI 텍스트 언어 변경 확인
+- [x] 로그인 후 언어 변경 → DB 저장 → 재로그인 시 해당 언어로 자동 복원 확인
+- [x] 미로그인 상태 언어 변경 → localStorage 저장 확인
 
 **의존성**: FE-15, BE-10
 
@@ -819,16 +819,16 @@
 **목표**: v2.0 전체 흐름 E2E 검증
 
 **작업 항목**
-- [ ] 테마 변경 → 즉시 UI 적용 → 로그아웃 → 재로그인 후 테마 유지 확인
-- [ ] 언어 변경 → 즉시 UI 텍스트 전환 → 재로그인 후 언어 유지 확인
-- [ ] 미로그인 테마·언어 변경 → 로그인 후 서버 값으로 덮어쓰기 확인
-- [ ] 내 정보 페이지에서 테마·언어 변경 동작 확인
-- [ ] v1.0 기능 회귀 없음 확인
+- [x] 테마 변경 → 즉시 UI 적용 → 로그아웃 → 재로그인 후 테마 유지 확인
+- [x] 언어 변경 → 즉시 UI 텍스트 전환 → 재로그인 후 언어 유지 확인
+- [x] 미로그인 테마·언어 변경 → 로그인 후 서버 값으로 덮어쓰기 확인
+- [x] 내 정보 페이지에서 테마·언어 변경 동작 확인
+- [x] v1.0 기능 회귀 없음 확인
 
 **완료 조건**
-- [ ] UC-08, UC-09 정상 동작 확인
-- [ ] v1.0 전체 기능 정상 동작 (회귀 없음) 확인
-- [ ] 375px ~ 1440px 반응형 레이아웃 깨짐 없음
+- [x] UC-08, UC-09 정상 동작 확인
+- [x] v1.0 전체 기능 정상 동작 (회귀 없음) 확인
+- [x] 375px ~ 1440px 반응형 레이아웃 깨짐 없음
 
 **의존성**: FE-16, FE-17
 

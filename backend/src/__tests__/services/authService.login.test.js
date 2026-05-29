@@ -15,6 +15,8 @@ const MOCK_USER = {
   email: 'test@example.com',
   password: 'hashed_password',
   name: '홍길동',
+  theme: 'light',
+  language: 'ko',
 };
 
 const ERROR_MESSAGE = '이메일 또는 비밀번호가 올바르지 않습니다.';
@@ -35,7 +37,7 @@ describe('authService.login', () => {
 
     expect(result).toEqual({
       token: 'mock_token',
-      user: { id: 1, email: 'test@example.com', name: '홍길동' },
+      user: { id: 1, email: 'test@example.com', name: '홍길동', theme: 'light', language: 'ko' },
     });
   });
 

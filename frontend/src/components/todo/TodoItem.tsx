@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import type { Todo, Category } from '../../types/todo';
+import { useTranslation } from 'react-i18next';
+import type { Todo, Category, TodoStatus } from '../../types/todo';
 import { calcTodoStatus } from '../../utils/todoStatus';
 import { formatDateRange } from '../../utils/dateFormatter';
 import { useUpdateTodo, useDeleteTodo } from '../../hooks/useTodoMutations';
@@ -21,6 +22,7 @@ interface TodoItemProps {
 }
 
 export function TodoItem({ todo, categories, onEdit }: TodoItemProps) {
+  const { t } = useTranslation();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { mutate: updateTodo } = useUpdateTodo();
   const { mutate: deleteTodo, isPending: isDeleting } = useDeleteTodo();
@@ -28,6 +30,14 @@ export function TodoItem({ todo, categories, onEdit }: TodoItemProps) {
   const status = calcTodoStatus(todo);
   const category = categories.find((c) => c.id === todo.categoryId);
   const dateRange = formatDateRange(todo.startDate, todo.endDate);
+
+  const statusLabelMap: Record<TodoStatus, string> = {
+    '시작 전': t('status.not_started'),
+    '진행 중': t('status.in_progress'),
+    '완료': t('status.completed'),
+    '기한 초과': t('status.overdue'),
+    '진행 중 (날짜 없음)': t('status.no_date'),
+  };
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,7 +54,7 @@ export function TodoItem({ todo, categories, onEdit }: TodoItemProps) {
         <button
           className={`${styles.checkbox} ${todo.isCompleted ? styles.checked : ''}`}
           onClick={handleToggle}
-          aria-label={todo.isCompleted ? '완료 취소' : '완료'}
+          aria-label={todo.isCompleted ? t('todo.uncomplete_btn') : t('todo.complete_btn')}
         >
           {todo.isCompleted && <span className={styles.checkMark}>✓</span>}
         </button>
@@ -53,12 +63,12 @@ export function TodoItem({ todo, categories, onEdit }: TodoItemProps) {
         </span>
         <div className={styles.meta}>
           {category && (
-            <span className={styles.badge} style={{ color: '#5f6368', background: '#f1f3f4' }}>
+            <span className={styles.badge} style={{ color: 'var(--color-text-secondary, #5f6368)', background: 'var(--color-hover, #f1f3f4)' }}>
               {category.name}
             </span>
           )}
           <span className={`${styles.badge} ${STATUS_BADGE_CLASS[status] ?? ''}`}>
-            {status}
+            {statusLabelMap[status] ?? status}
           </span>
           <span className={styles.date}>{dateRange}</span>
         </div>
@@ -66,29 +76,29 @@ export function TodoItem({ todo, categories, onEdit }: TodoItemProps) {
           <button
             className={`${styles.actionBtn} ${styles.editBtn}`}
             onClick={(e) => { e.stopPropagation(); onEdit(todo); }}
-            aria-label="수정"
+            aria-label={t('todo.edit_btn')}
           >
-            수정
+            {t('todo.edit_btn')}
           </button>
           <button
             className={`${styles.actionBtn} ${styles.deleteBtn}`}
             onClick={(e) => { e.stopPropagation(); setShowDeleteModal(true); }}
-            aria-label="삭제"
+            aria-label={t('todo.delete_btn')}
           >
-            삭제
+            {t('todo.delete_btn')}
           </button>
         </div>
       </div>
       <Modal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
-        title="정말 삭제하시겠습니까?"
-        confirmLabel={isDeleting ? '삭제 중...' : '삭제'}
+        title={t('todo.delete_confirm_title')}
+        confirmLabel={isDeleting ? t('todo.deleting') : t('todo.delete_btn')}
         onConfirm={handleDelete}
         confirmVariant="danger"
       >
         <p>"{todo.title}"</p>
-        <p>이 작업은 되돌릴 수 없습니다.</p>
+        <p>{t('todo.delete_confirm_msg')}</p>
       </Modal>
     </>
   );
