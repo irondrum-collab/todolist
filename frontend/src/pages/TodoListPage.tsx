@@ -40,13 +40,13 @@ export function TodoListPage() {
           >
             {showFilterMobile ? '▲ 필터 접기' : '▼ 필터 펼치기'}
           </button>
-          {(showFilterMobile || true) && (
-            <div style={{ display: showFilterMobile ? 'block' : 'none' }} className="mobile-filter">
+          {showFilterMobile && (
+            <div className={styles.mobileFilter}>
               <TodoFilter filters={filters} categories={categories} onChange={setFilters} />
               <CategoryManager categories={categories} />
             </div>
           )}
-          <div className="desktop-filter">
+          <div className={styles.desktopFilter}>
             <TodoFilter filters={filters} categories={categories} onChange={setFilters} />
             <CategoryManager categories={categories} />
           </div>

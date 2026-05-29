@@ -69,6 +69,14 @@
   justify-content: center;
 }
 
+.mobileFilter {
+  display: none;
+}
+
+.desktopFilter {
+  display: block;
+}
+
 @media (max-width: 1023px) {
   .main {
     flex-direction: column;
@@ -84,5 +92,13 @@
 
   .fab {
     display: flex;
+  }
+
+  .mobileFilter {
+    display: block;
+  }
+
+  .desktopFilter {
+    display: none;
   }
 }
