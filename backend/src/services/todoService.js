@@ -3,8 +3,8 @@ const categoryRepository = require('../repositories/categoryRepository');
 const { calcStatus } = require('../utils/todoStatus');
 
 const toTodo = (row) => {
-  const startDate = row.start_date ? row.start_date.toISOString().slice(0, 10) : null;
-  const endDate = row.end_date ? row.end_date.toISOString().slice(0, 10) : null;
+  const startDate = row.start_date || null;
+  const endDate = row.end_date || null;
   return {
     id: row.id,
     title: row.title,
@@ -68,8 +68,8 @@ const update = async (userId, todoId, fields) => {
     throw err;
   }
 
-  const resolvedStartDate = fields.startDate !== undefined ? fields.startDate : (existing.start_date ? existing.start_date.toISOString().slice(0, 10) : null);
-  const resolvedEndDate = fields.endDate !== undefined ? fields.endDate : (existing.end_date ? existing.end_date.toISOString().slice(0, 10) : null);
+  const resolvedStartDate = fields.startDate !== undefined ? fields.startDate : (existing.start_date || null);
+  const resolvedEndDate = fields.endDate !== undefined ? fields.endDate : (existing.end_date || null);
 
   if (resolvedStartDate && resolvedEndDate && resolvedEndDate < resolvedStartDate) {
     const err = new Error('종료일자는 시작일자보다 같거나 이후여야 합니다.');
